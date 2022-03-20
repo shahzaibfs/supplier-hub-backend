@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1.0/authenticate").permitAll()
-                .antMatchers("/api/v1/home").hasAuthority("ROLE_USER")
+                .antMatchers("/api/v1/home").hasAuthority("ROLE_SUPPLIER")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -55,5 +55,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-    // just checking the bug
+
 }

@@ -58,7 +58,7 @@ public class AuthenticationController {
         UserDetails EXISTING_USER = myUserDetailService.loadUserByUsername(authRequest.getUsername());
 
         final String  getToken=  jwtTokenUtil.generateToken(EXISTING_USER);
-        final JwtTokenResponse jwtTokenResponse = new JwtTokenResponse(getToken,EXISTING_USER);
+        final JwtTokenResponse jwtTokenResponse = new JwtTokenResponse(getToken,myUserDetailService.getUserFromDatabase(EXISTING_USER.getUsername()));
 
         return ResponseEntity.ok(jwtTokenResponse);
 
