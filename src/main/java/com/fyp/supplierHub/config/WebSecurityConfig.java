@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -20,17 +21,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MyUserDetailService myUserDetailService ;
     private final JwtRequestFilterBefore jwtRequestFilterBefore;
+    private final PasswordEncoder passwordEncoder ;
+
     @Autowired
-    WebSecurityConfig(MyUserDetailService myUserDetailService , JwtRequestFilterBefore jwtRequestFilterBefore){
-        this.myUserDetailService = myUserDetailService ;
+    public WebSecurityConfig(MyUserDetailService myUserDetailService, JwtRequestFilterBefore jwtRequestFilterBefore, PasswordEncoder passwordEncoder) {
+        this.myUserDetailService = myUserDetailService;
         this.jwtRequestFilterBefore = jwtRequestFilterBefore;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1.0/authenticate").permitAll()
+                .antMatchers("/api/v1.0/authenticate","/api/v1.0/user/**").permitAll()
                 .antMatchers("/api/v1/home").hasAuthority("ROLE_SUPPLIER")
                 .anyRequest()
                 .authenticated()
@@ -42,13 +46,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(myUserDetailService).passwordEncoder(passwordEncoderBean());
+        auth.userDetailsService(myUserDetailService).passwordEncoder(passwordEncoder);
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoderBean(){
-        return NoOpPasswordEncoder.getInstance();
-    }
+
 
     @Override
     @Bean

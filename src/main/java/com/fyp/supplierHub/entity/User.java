@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -26,13 +27,13 @@ public class User {
     @JsonIgnore
     private String userPassword ;
     @Column(name = "account_creation_date",nullable = false)
-    private Date accountCreationDate ;
+    private LocalDate accountCreationDate ;
     @Column(name = "account_status")
     private boolean accountStatus;
     @Column(name = "is_account_ban")
     private boolean isAccountBan ;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
     @JoinTable(
             name = "user_role",
             joinColumns =  @JoinColumn(name = "user_id",nullable = false) ,
@@ -41,7 +42,7 @@ public class User {
     )
     private Set<Role> roles ;
 
-    public User(int userId, String userName, String userEmail, String userPassword, Date accountCreationDate, boolean accountStatus, boolean isAccountBan, Set<Role> roles) {
+    public User(int userId, String userName, String userEmail, String userPassword, LocalDate accountCreationDate, boolean accountStatus, boolean isAccountBan, Set<Role> roles) {
         this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
@@ -52,7 +53,7 @@ public class User {
         this.roles = roles;
     }
 
-    public User(String userName, String userEmail, String userPassword, Date accountCreationDate, boolean accountStatus, boolean isAccountBan) {
+    public User(String userName, String userEmail, String userPassword, LocalDate accountCreationDate, boolean accountStatus, boolean isAccountBan) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
@@ -61,7 +62,7 @@ public class User {
         this.isAccountBan = isAccountBan;
     }
 
-    public User(String userName, String userEmail, String userPassword, Date accountCreationDate, boolean accountStatus, boolean isAccountBan, Set<Role> roles) {
+    public User(String userName, String userEmail, String userPassword, LocalDate accountCreationDate, boolean accountStatus, boolean isAccountBan, Set<Role> roles) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
@@ -106,11 +107,11 @@ public class User {
         this.userPassword = userPassword;
     }
 
-    public Date getAccountCreationDate() {
+    public LocalDate getAccountCreationDate() {
         return accountCreationDate;
     }
 
-    public void setAccountCreationDate(Date accountCreationDate) {
+    public void setAccountCreationDate(LocalDate accountCreationDate) {
         this.accountCreationDate = accountCreationDate;
     }
 
@@ -130,16 +131,13 @@ public class User {
         isAccountBan = accountBan;
     }
 
-    public Collection<SimpleGrantedAuthority> getRoles() {
-        Collection<SimpleGrantedAuthority> roles = new ArrayList<>();
-        this.roles.forEach(role -> {
-          roles.add(new SimpleGrantedAuthority("ROLE_"+role.getRoleName()));
-        });
-        return roles;
-    }
+
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
 }

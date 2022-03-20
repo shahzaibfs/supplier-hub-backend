@@ -16,7 +16,7 @@ public class Role {
     @Column(name = "role_name",nullable = false)
     private String roleName;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles",cascade = CascadeType.MERGE)
     @JsonIgnore
     private Set<User> users;
 
