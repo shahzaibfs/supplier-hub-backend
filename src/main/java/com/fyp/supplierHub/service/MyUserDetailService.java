@@ -1,8 +1,10 @@
 package com.fyp.supplierHub.service;
 
 import com.fyp.supplierHub.entity.Role;
+import com.fyp.supplierHub.entity.Supplier;
 import com.fyp.supplierHub.entity.User;
 import com.fyp.supplierHub.models.UserRequest;
+import com.fyp.supplierHub.reposiory.SupplierRepo;
 import com.fyp.supplierHub.reposiory.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -20,14 +23,15 @@ import java.util.*;
 public class MyUserDetailService implements UserDetailsService {
 
     private final UserRepo userRepo;
+    private final SupplierRepo supplierRepo ;
     @Autowired
     private PasswordEncoder encoder ;
 
 
     @Autowired
-    public MyUserDetailService(UserRepo userRepo) {
+    public MyUserDetailService(UserRepo userRepo ,SupplierRepo supplierRepo) {
         this.userRepo = userRepo;
-
+this.supplierRepo=supplierRepo;
     }
 
     @Override
@@ -51,13 +55,14 @@ public class MyUserDetailService implements UserDetailsService {
         return  user;
     }
 
-    public Collection<SimpleGrantedAuthority> getAuthorities(Set<Role> allRoles) {
+    private final  Collection<SimpleGrantedAuthority> getAuthorities(Set<Role> allRoles) {
         Collection<SimpleGrantedAuthority> roles = new ArrayList<>();
        allRoles.forEach(role -> {
             roles.add(new SimpleGrantedAuthority("ROLE_"+role.getRoleName()));
         });
         return roles;
     }
+
     public final User getUserFromDatabase(String username) throws UsernameNotFoundException{
 
         Optional<User> EXISTING_USER = userRepo.findByUserName(username);
@@ -66,15 +71,31 @@ public class MyUserDetailService implements UserDetailsService {
         return EXISTING_USER.get();
     }
 
-    public final User createNewUser(UserRequest newUser){
-        User CREATE_USER = new User();
-        CREATE_USER.setUserName(newUser.getUsername());
-        CREATE_USER.setUserEmail(newUser.getEmail());
-        CREATE_USER.setUserPassword(encoder.encode(newUser.getPassword()));
-        CREATE_USER.setAccountCreationDate(LocalDate.now());
-        CREATE_USER.setRoles(new HashSet<Role>(Arrays.asList(newUser.getRole())));
-        System.out.println(newUser.getRole());
-        return userRepo.save(CREATE_USER);
+
+    public final String  createNewUser(UserRequest userRequest){
+            User NEW_USER = new User();
+
+            NEW_USER.setUserName(userRequest.getUsername());
+            NEW_USER.setUserEmail(userRequest.getEmail());
+            NEW_USER.setUserPassword(encoder.encode(userRequest.getPassword()));
+            NEW_USER.setAccountCreationDate(LocalDate.now());
+            NEW_USER.setRoles(new HashSet<Role>(Arrays.asList(userRequest.getRole())));
+
+            userRepo.save(NEW_USER);
+            switch (userRequest.getRole().getRoleName()){
+                case "CUSTOMER":
+                    return null ;
+                case "SUPPLIER":
+                    Supplier NEW_SUPPLIER = new Supplier();
+                    NEW_SUPPLIER.setUser(NEW_USER);
+                    supplierRepo.save(NEW_SUPPLIER) ;
+                    return "User created Succesfully ";
+                default:
+                    return "Error While Creating User ";
+
+            }
+
+
     }
 
 }

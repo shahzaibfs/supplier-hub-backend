@@ -5,9 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+
 import java.util.Set;
 
 @Entity
@@ -19,7 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId ;
 
-    @Column(name = "user_name" ,nullable = false)
+    @Column(name = "user_name" ,nullable = false,unique = true)
     private String userName;
     @Column(name = "user_email",nullable = false)
     private String userEmail;
