@@ -33,7 +33,7 @@ public class Supplier {
     )
     @JsonIgnore
     private User user ;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "supplier" ,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Set<SupplierBrandAddresses> supplierBrandAddresses ;
 
     public Supplier(String supplierFirstname, String supplierLastname, String supplierProfileUrl, String supplierBio, long supplierContactNo, String brandName, String brandOwnerName, User user) {

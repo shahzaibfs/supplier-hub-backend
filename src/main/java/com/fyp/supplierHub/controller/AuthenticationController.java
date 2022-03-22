@@ -71,7 +71,7 @@ public class AuthenticationController {
         System.out.println(roles.get(0).getRoleName());
         switch (roles.get(0).getRoleName()){
             case "SUPPLIER":
-                final JwtTokenResponse jwtTokenResponse = new JwtTokenResponse(getToken,user,supplierService.LoadSupplierByUserId(user));
+                final JwtTokenResponse jwtTokenResponse = new JwtTokenResponse(getToken,user,supplierService.LoadSupplierByUser(user));
                 return ResponseEntity.ok(jwtTokenResponse);
             case "CUSTOMER":
                 return ResponseEntity.ok("customer");

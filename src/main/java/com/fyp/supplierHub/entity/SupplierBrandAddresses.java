@@ -1,5 +1,7 @@
 package com.fyp.supplierHub.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -21,13 +23,14 @@ public class SupplierBrandAddresses {
     @Column(name = "is_main")
     private boolean isMain ;
     @Column(name = "creation_date")
-    private LocalDate creationDate ;
+    private LocalDate creationDate = LocalDate.now() ;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "supplier_id",
             referencedColumnName = "supplier_id"
     )
+    @JsonIgnore
     private Supplier supplier ;
 
     public SupplierBrandAddresses(int supplierBrandAddressId, String address, String city, long postalCode, boolean isMain, LocalDate creationDate, Supplier supplier) {
