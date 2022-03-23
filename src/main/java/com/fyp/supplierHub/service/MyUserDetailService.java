@@ -79,6 +79,7 @@ this.supplierRepo=supplierRepo;
             NEW_USER.setUserEmail(userRequest.getEmail());
             NEW_USER.setUserPassword(encoder.encode(userRequest.getPassword()));
             NEW_USER.setAccountCreationDate(LocalDate.now());
+        System.out.println(userRequest.getRole());
             NEW_USER.setRoles(new HashSet<Role>(Arrays.asList(userRequest.getRole())));
 
             userRepo.save(NEW_USER);

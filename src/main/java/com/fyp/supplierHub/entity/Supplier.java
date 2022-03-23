@@ -33,10 +33,25 @@ public class Supplier {
     )
     @JsonIgnore
     private User user ;
-    @OneToMany(mappedBy = "supplier" ,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "supplier" ,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<SupplierBrandAddresses> supplierBrandAddresses ;
 
-    public Supplier(String supplierFirstname, String supplierLastname, String supplierProfileUrl, String supplierBio, long supplierContactNo, String brandName, String brandOwnerName, User user) {
+    @OneToOne(cascade = CascadeType.ALL ,fetch = FetchType.EAGER)
+    @JoinColumn(
+            name = "instagram_id"
+            ,referencedColumnName = "instagram_id"
+    )
+    private Instagram instagram ;
+
+    @OneToOne(cascade = CascadeType.ALL ,fetch = FetchType.EAGER)
+    @JoinColumn(
+            name = "facebook_id",
+            referencedColumnName = "facebook_id"
+    )
+    private Facebook facebook ;
+
+    public Supplier(int supplierId, String supplierFirstname, String supplierLastname, String supplierProfileUrl, String supplierBio, long supplierContactNo, String brandName, String brandOwnerName, User user, Set<SupplierBrandAddresses> supplierBrandAddresses, Instagram instagram, Facebook facebook) {
+        this.supplierId = supplierId;
         this.supplierFirstname = supplierFirstname;
         this.supplierLastname = supplierLastname;
         this.supplierProfileUrl = supplierProfileUrl;
@@ -45,16 +60,9 @@ public class Supplier {
         this.brandName = brandName;
         this.brandOwnerName = brandOwnerName;
         this.user = user;
-    }
-
-    public Supplier(String supplierFirstname, String supplierLastname, String supplierProfileUrl, String supplierBio, long supplierContactNo, String brandName, String brandOwnerName) {
-        this.supplierFirstname = supplierFirstname;
-        this.supplierLastname = supplierLastname;
-        this.supplierProfileUrl = supplierProfileUrl;
-        this.supplierBio = supplierBio;
-        this.supplierContactNo = supplierContactNo;
-        this.brandName = brandName;
-        this.brandOwnerName = brandOwnerName;
+        this.supplierBrandAddresses = supplierBrandAddresses;
+        this.instagram = instagram;
+        this.facebook = facebook;
     }
 
     public Supplier() {
@@ -138,5 +146,21 @@ public class Supplier {
 
     public void setSupplierBrandAddresses(Set<SupplierBrandAddresses> supplierBrandAddresses) {
         this.supplierBrandAddresses = supplierBrandAddresses;
+    }
+
+    public Instagram getInstagram() {
+        return instagram;
+    }
+
+    public void setInstagram(Instagram instagram) {
+        this.instagram = instagram;
+    }
+
+    public Facebook getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(Facebook facebook) {
+        this.facebook = facebook;
     }
 }

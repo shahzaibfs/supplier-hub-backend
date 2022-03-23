@@ -65,21 +65,10 @@ public class AuthenticationController {
         UserDetails EXISTING_USER = myUserDetailService.loadUserByUsername(authRequest.getUsername());
 
         final String  getToken=  jwtTokenUtil.generateToken(EXISTING_USER);
-
         final User user  = myUserDetailService.getUserFromDatabase(EXISTING_USER.getUsername());
-        List<Role> roles = new ArrayList<>(user.getRoles());
-        System.out.println(roles.get(0).getRoleName());
-        switch (roles.get(0).getRoleName()){
-            case "SUPPLIER":
-                final JwtTokenResponse jwtTokenResponse = new JwtTokenResponse(getToken,user,supplierService.LoadSupplierByUser(user));
-                return ResponseEntity.ok(jwtTokenResponse);
-            case "CUSTOMER":
-                return ResponseEntity.ok("customer");
-            case "ADMIN" :
-                return ResponseEntity.ok("i am admin ");
-            default:
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad Credentials");
-        }
+        final JwtTokenResponse jwtTokenResponse = new JwtTokenResponse(getToken,user);
+
+        return ResponseEntity.ok(jwtTokenResponse);
 
 
 

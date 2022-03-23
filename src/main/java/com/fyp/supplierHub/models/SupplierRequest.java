@@ -1,5 +1,7 @@
 package com.fyp.supplierHub.models;
 
+import com.fyp.supplierHub.entity.Facebook;
+import com.fyp.supplierHub.entity.Instagram;
 import com.fyp.supplierHub.entity.SupplierBrandAddresses;
 
 public class SupplierRequest {
@@ -12,6 +14,26 @@ public class SupplierRequest {
     private String brandName ;
     private String brandOwnerName ;
     private SupplierBrandAddresses brandAddress ;
+    private Facebook facebook ;
+    private Instagram instagram ;
+
+
+
+    public Facebook getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(Facebook facebook) {
+        this.facebook = facebook;
+    }
+
+    public Instagram getInstagram() {
+        return instagram;
+    }
+
+    public void setInstagram(Instagram instagram) {
+        this.instagram = instagram;
+    }
 
     public SupplierRequest(String firstName, String lastName, String profileUrl, String bio, long contactNo, String brandName, String brandOwnerName, SupplierBrandAddresses brandAddress) {
         this.firstName = firstName;

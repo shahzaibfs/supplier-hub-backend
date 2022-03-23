@@ -17,6 +17,9 @@ public interface SupplierBrandAddressRepo extends JpaRepository<SupplierBrandAdd
     @Query("select s from SupplierBrandAddresses s where s.supplier.supplierId = ?1 and s.supplierBrandAddressId = ?2" )
     SupplierBrandAddresses findBrandAddressByUsernameAndId(Integer supplierId , Integer brandAddressId);
 
+    @Query("select s from SupplierBrandAddresses s where s.supplier.supplierId = ?1 and s.isMain = ?2" )
+    SupplierBrandAddresses findMainAddress(Integer supplierId , boolean isMain);
+
     @Modifying
     @Query("Delete from SupplierBrandAddresses s where s.supplier.supplierId = ?1 and s.supplierBrandAddressId = ?2" )
     void deleteBrandAddress(Integer supplierId , Integer brandAddressId);

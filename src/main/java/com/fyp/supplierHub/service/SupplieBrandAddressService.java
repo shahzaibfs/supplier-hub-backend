@@ -2,7 +2,6 @@ package com.fyp.supplierHub.service;
 
 import com.fyp.supplierHub.entity.Supplier;
 import com.fyp.supplierHub.entity.SupplierBrandAddresses;
-import com.fyp.supplierHub.entity.User;
 import com.fyp.supplierHub.models.BrandAddressRequest;
 import com.fyp.supplierHub.reposiory.SupplierBrandAddressRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +24,12 @@ public class SupplieBrandAddressService {
 
 
     public Collection<?> findAllByUsername(String username){
-        Supplier EXISTING_SUPPLIER = supplierService.getSupplierFromDatabase(username);
+        Supplier EXISTING_SUPPLIER = supplierService.LoadAuthenticatedSupplier(username);
         return supplierBrandAddressRepo.findAllBySupplier(EXISTING_SUPPLIER);
     }
 
     public SupplierBrandAddresses findOneByUsernameAndId(String username,Integer brandAddressId){
-        Supplier EXISTING_SUPPLIER = supplierService.getSupplierFromDatabase(username);
+        Supplier EXISTING_SUPPLIER = supplierService.LoadAuthenticatedSupplier(username);
         return supplierBrandAddressRepo.findBrandAddressByUsernameAndId(EXISTING_SUPPLIER.getSupplierId(),brandAddressId);
     }
 
@@ -42,7 +41,7 @@ public class SupplieBrandAddressService {
             supplierBrandAddress.setPostalCode(brandAddressRequest.getPostalCode());
             return  supplierBrandAddressRepo.save(supplierBrandAddress) ;
         }
-        Supplier EXISTING_SUPPLIER = supplierService.getSupplierFromDatabase(username);
+        Supplier EXISTING_SUPPLIER = supplierService.LoadAuthenticatedSupplier(username);
         SupplierBrandAddresses supplierBrandAddress = new SupplierBrandAddresses() ;
         supplierBrandAddress.setAddress(brandAddressRequest.getAddress());
         supplierBrandAddress.setCity(brandAddressRequest.getCity());
@@ -55,11 +54,12 @@ public class SupplieBrandAddressService {
 
     @Transactional
     public void deleteBrandAddress (String username   ,  Integer brandAddressId){
-        Supplier EXISTING_SUPPLIER = supplierService.getSupplierFromDatabase(username);
+        Supplier EXISTING_SUPPLIER = supplierService.LoadAuthenticatedSupplier(username);
         System.out.println(EXISTING_SUPPLIER.getSupplierId());
         System.out.println(brandAddressId);
         supplierBrandAddressRepo.deleteBrandAddress(EXISTING_SUPPLIER.getSupplierId(),brandAddressId) ;
 
-
     }
+
+
 }

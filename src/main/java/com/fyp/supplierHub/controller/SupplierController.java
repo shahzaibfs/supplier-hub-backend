@@ -1,5 +1,6 @@
 package com.fyp.supplierHub.controller;
 
+import com.fyp.supplierHub.entity.Supplier;
 import com.fyp.supplierHub.models.BrandAddressRequest;
 import com.fyp.supplierHub.models.SupplierRequest;
 import com.fyp.supplierHub.reposiory.SupplierBrandAddressRepo;
@@ -23,9 +24,14 @@ public class SupplierController {
         this.supplieBrandAddressService = supplieBrandAddressService ;
     }
 
-    @GetMapping
+    @GetMapping("/load-all")
     public ResponseEntity<?> loadAllSuppliers(){
         return ResponseEntity.ok(supplierService.loadAllSuppliers());
+    }
+
+    @GetMapping
+    public ResponseEntity<Supplier> loadAuthenticatedSupplier (Authentication authentication){
+        return ResponseEntity.ok(supplierService.LoadAuthenticatedSupplier(authentication.getName()));
     }
 
     @PostMapping("/edit")
