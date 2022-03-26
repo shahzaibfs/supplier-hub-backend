@@ -55,7 +55,7 @@ this.supplierRepo=supplierRepo;
         return  user;
     }
 
-    private final  Collection<SimpleGrantedAuthority> getAuthorities(Set<Role> allRoles) {
+    private   Collection<SimpleGrantedAuthority> getAuthorities(Set<Role> allRoles) {
         Collection<SimpleGrantedAuthority> roles = new ArrayList<>();
        allRoles.forEach(role -> {
             roles.add(new SimpleGrantedAuthority("ROLE_"+role.getRoleName()));
@@ -63,7 +63,7 @@ this.supplierRepo=supplierRepo;
         return roles;
     }
 
-    public final User getUserFromDatabase(String username) throws UsernameNotFoundException{
+    public  User getUserFromDatabase(String username) throws UsernameNotFoundException{
 
         Optional<User> EXISTING_USER = userRepo.findByUserName(username);
         EXISTING_USER.orElseThrow( ()-> new UsernameNotFoundException("InValid Username && Password") );
@@ -72,7 +72,7 @@ this.supplierRepo=supplierRepo;
     }
 
 
-    public final String  createNewUser(UserRequest userRequest){
+    public  String  createNewUser(UserRequest userRequest){
             User NEW_USER = new User();
 
             NEW_USER.setUserName(userRequest.getUsername());

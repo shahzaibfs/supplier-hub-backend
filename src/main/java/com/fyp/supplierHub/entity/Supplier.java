@@ -50,6 +50,9 @@ public class Supplier {
     )
     private Facebook facebook ;
 
+    @OneToMany( mappedBy = "supplier",cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    private Set<Product> products ;
+
     public Supplier(int supplierId, String supplierFirstname, String supplierLastname, String supplierProfileUrl, String supplierBio, long supplierContactNo, String brandName, String brandOwnerName, User user, Set<SupplierBrandAddresses> supplierBrandAddresses, Instagram instagram, Facebook facebook) {
         this.supplierId = supplierId;
         this.supplierFirstname = supplierFirstname;
@@ -162,5 +165,13 @@ public class Supplier {
 
     public void setFacebook(Facebook facebook) {
         this.facebook = facebook;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 }
