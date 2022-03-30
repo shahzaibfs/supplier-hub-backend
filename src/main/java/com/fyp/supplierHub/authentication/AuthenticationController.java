@@ -1,5 +1,6 @@
 package com.fyp.supplierHub.authentication;
 
+import com.fyp.supplierHub.exceptions.Exceptions.NotFoundException;
 import com.fyp.supplierHub.jwtToken.JwtTokenResponse;
 import com.fyp.supplierHub.jwtToken.JwtTokenUtil;
 import com.fyp.supplierHub.supplier.service.SupplierService;
@@ -57,7 +58,7 @@ public class AuthenticationController {
                     );
         }
         catch(BadCredentialsException e){
-            throw new BadCredentialsException("incorrect Username and password ");
+           throw new NotFoundException("INVALID Credentials", "Please provide the Correct Username and password");
         }
 
         UserDetails EXISTING_USER = myUserDetailService.loadUserByUsername(authRequest.getUsername());

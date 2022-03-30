@@ -1,6 +1,7 @@
 package com.fyp.supplierHub.product;
 
 
+import com.fyp.supplierHub.exceptions.Exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -28,7 +29,10 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<?> loadOne(@PathVariable Integer productId){
+    public ResponseEntity<?> loadOne(@PathVariable Integer productId) throws NotFoundException {
+        if(productId <0){
+            throw new NotFoundException("Id Not Found");
+        }
         return  ResponseEntity.ok(productService.loadOne(productId));
     }
     @DeleteMapping("/{productId}")

@@ -1,5 +1,6 @@
 package com.fyp.supplierHub.product;
 
+import com.fyp.supplierHub.exceptions.Exceptions.NotFoundException;
 import com.fyp.supplierHub.supplier.entity.Supplier;
 import com.fyp.supplierHub.supplier.service.SupplierServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class ProductService {
 
     public Product loadOne (Integer id){
         Optional <Product> EXISTING_PRODUCT = Optional.ofNullable(productRepo.findById(id)
-                .orElseThrow(()-> new IllegalStateException("Product Not found")));
+                .orElseThrow(()-> new NotFoundException("Product Not found")));
         return EXISTING_PRODUCT.get() ;
     }
 
