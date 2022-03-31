@@ -50,6 +50,9 @@ public class AuthenticationController {
     @PostMapping
     public ResponseEntity<?> generateJwtToken (@RequestBody AuthRequest authRequest) throws RuntimeException
     {
+        if(authRequest.getUsername().isEmpty() || authRequest.getPassword().isEmpty()){
+            throw new NotFoundException("INVALID Credentials", "Please provide the Correct Username and password");
+        }
         try{
             authenticationManager.authenticate
                     (

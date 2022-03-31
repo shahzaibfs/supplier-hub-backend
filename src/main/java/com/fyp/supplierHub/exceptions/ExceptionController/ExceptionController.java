@@ -1,5 +1,7 @@
 package com.fyp.supplierHub.exceptions.ExceptionController;
 
+import com.fyp.supplierHub.exceptions.Exceptions.BadRequestException;
+import com.fyp.supplierHub.exceptions.Exceptions.DatabaseException;
 import com.fyp.supplierHub.exceptions.Exceptions.NotFoundException;
 import com.fyp.supplierHub.exceptions.Exceptions.UniqueColumnException;
 import com.fyp.supplierHub.exceptions.models.ExceptionResponse;
@@ -30,5 +32,25 @@ public class ExceptionController {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
+    @ExceptionHandler(value = BadRequestException.class)
+    public ResponseEntity<?> throwBadRequestException(BadRequestException exception){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                exception.getCreatedAt(),
+                exception.getError(),
+                exception.getHelpingMessage()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(value = DatabaseException.class)
+    public ResponseEntity<?> throwDatabaseException(DatabaseException exception){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                exception.getCreatedAt(),
+                exception.getError(),
+                exception.getCause()
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
+    }
+
 
 }

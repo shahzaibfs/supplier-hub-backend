@@ -1,5 +1,7 @@
 package com.fyp.supplierHub.user;
 
+import com.fyp.supplierHub.exceptions.Exceptions.BadRequestException;
+import com.fyp.supplierHub.exceptions.Exceptions.DatabaseException;
 import com.fyp.supplierHub.exceptions.Exceptions.NotFoundException;
 import com.fyp.supplierHub.exceptions.Exceptions.UniqueColumnException;
 import com.fyp.supplierHub.roles.Role;
@@ -80,34 +82,47 @@ public class MyUserDetailService implements UserDetailsService {
     @Transactional
     public  String  createNewUser(UserRequest userRequest)
     {
-            User NEW_USER = new User();
+            if(userRequest.getUsername().isEmpty() || userRequest.getRole() ==null ||
+                userRequest.getEmail().isEmpty()|| userRequest.getPassword().isEmpty())
+            {
+                throw new BadRequestException("Null Fields" ,"please fill up all the Details");
+            }
 
+            int EXISTING_USER = userRepo.findByUsername(userRequest.getUsername());
+            if(EXISTING_USER >0)
+            {
+                throw new UniqueColumnException("username Unique","Username Must be Unique");
+            }
+
+            User NEW_USER = new User();
             NEW_USER.setUserName(userRequest.getUsername());
             NEW_USER.setUserEmail(userRequest.getEmail());
             NEW_USER.setUserPassword(encoder.encode(userRequest.getPassword()));
             NEW_USER.setAccountCreationDate(LocalDate.now());
             NEW_USER.setRoles(new HashSet<Role>(Arrays.asList(userRequest.getRole())));
-            try{
+
+            try
+            {
                 userRepo.save(NEW_USER);
-            }catch (Exception e){
-                throw new UniqueColumnException("Username Must Be unique","please change the username");
             }
-            switch (userRequest.getRole().getRoleName()){
+            catch (Exception e)
+            {
+                throw new DatabaseException("failed to Create",e.getCause());
+            }
+            switch (userRequest.getRole().getRoleName())
+            {
                 case "CUSTOMER":
-                    return null ;
+                    throw new DatabaseException("failed to Create");
+
                 case "SUPPLIER":
+
                     Supplier NEW_SUPPLIER = new Supplier();
                     NEW_SUPPLIER.setUser(NEW_USER);
-                    try
-                    {
                     supplierRepo.save(NEW_SUPPLIER) ;
-                    }
-                    catch(Exception e){
-                        throw new RuntimeException(e);
-                    }
-                    return "User created Succesfully ";
+                    return "User created Succesfully";
+
                 default:
-                    return "Error While Creating User ";
+                    throw new DatabaseException("failed to Create");
 
             }
 
