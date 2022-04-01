@@ -10,7 +10,7 @@ public class SupplierRequest {
     private String lastName ;
     private String profileUrl;
     private String bio;
-    private long contactNo;
+    private String contactNo;
     private String brandName ;
     private String brandOwnerName ;
     private SupplierBrandAddresses brandAddress ;
@@ -35,7 +35,7 @@ public class SupplierRequest {
         this.instagram = instagram;
     }
 
-    public SupplierRequest(String firstName, String lastName, String profileUrl, String bio, long contactNo, String brandName, String brandOwnerName, SupplierBrandAddresses brandAddress) {
+    public SupplierRequest(String firstName, String lastName, String profileUrl, String bio, String contactNo, String brandName, String brandOwnerName, SupplierBrandAddresses brandAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.profileUrl = profileUrl;
@@ -78,11 +78,11 @@ public class SupplierRequest {
         this.bio = bio;
     }
 
-    public long getContactNo() {
+    public String getContactNo() {
         return contactNo;
     }
 
-    public void setContactNo(long contactNo) {
+    public void setContactNo(String contactNo) {
         this.contactNo = contactNo;
     }
 

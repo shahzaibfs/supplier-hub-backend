@@ -1,5 +1,6 @@
 package com.fyp.supplierHub.authentication;
 
+import com.fyp.supplierHub.exceptions.Exceptions.BadRequestException;
 import com.fyp.supplierHub.exceptions.Exceptions.NotFoundException;
 import com.fyp.supplierHub.jwtToken.JwtTokenResponse;
 import com.fyp.supplierHub.jwtToken.JwtTokenUtil;
@@ -51,7 +52,7 @@ public class AuthenticationController {
     public ResponseEntity<?> generateJwtToken (@RequestBody AuthRequest authRequest) throws RuntimeException
     {
         if(authRequest.getUsername().isEmpty() || authRequest.getPassword().isEmpty()){
-            throw new NotFoundException("INVALID Credentials", "Please provide the Correct Username and password");
+            throw new BadRequestException("INVALID Credentials", "api/v1.0/authenticate");
         }
         try{
             authenticationManager.authenticate

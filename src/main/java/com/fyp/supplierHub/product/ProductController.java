@@ -31,7 +31,7 @@ public class ProductController {
     @PutMapping("/{productId}")
     public ResponseEntity<?> loadOne(@PathVariable Integer productId) throws NotFoundException {
         if(productId <0){
-            throw new NotFoundException("Id Not Found");
+            throw new NotFoundException("ID Not Found!","api/v1.0/product/"+productId);
         }
         return  ResponseEntity.ok(productService.loadOne(productId));
     }

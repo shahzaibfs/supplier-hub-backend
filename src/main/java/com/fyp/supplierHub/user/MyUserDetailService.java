@@ -1,5 +1,7 @@
 package com.fyp.supplierHub.user;
 
+import com.fyp.supplierHub.customer.entity.Customer;
+import com.fyp.supplierHub.customer.repository.CustomerRepo;
 import com.fyp.supplierHub.exceptions.Exceptions.BadRequestException;
 import com.fyp.supplierHub.exceptions.Exceptions.DatabaseException;
 import com.fyp.supplierHub.exceptions.Exceptions.NotFoundException;
@@ -26,15 +28,18 @@ public class MyUserDetailService implements UserDetailsService {
 
     private final UserRepo userRepo;
     private final SupplierRepo supplierRepo ;
+    private final CustomerRepo customerRepo ;
     private final PasswordEncoder encoder ;
 
 
+
     @Autowired
-    public MyUserDetailService(UserRepo userRepo ,SupplierRepo supplierRepo, PasswordEncoder encoder )
+    public MyUserDetailService(UserRepo userRepo ,SupplierRepo supplierRepo, PasswordEncoder encoder ,CustomerRepo customerRepo)
     {
         this.userRepo = userRepo;
         this.supplierRepo=supplierRepo;
         this.encoder=encoder;
+        this.customerRepo =customerRepo;
     }
 
     @Override
@@ -85,13 +90,13 @@ public class MyUserDetailService implements UserDetailsService {
             if(userRequest.getUsername().isEmpty() || userRequest.getRole() ==null ||
                 userRequest.getEmail().isEmpty()|| userRequest.getPassword().isEmpty())
             {
-                throw new BadRequestException("Null Fields" ,"please fill up all the Details");
+                throw new BadRequestException("Null Fields" ,"api/v1.0/user/create");
             }
 
             int EXISTING_USER = userRepo.findByUsername(userRequest.getUsername());
             if(EXISTING_USER >0)
             {
-                throw new UniqueColumnException("username Unique","Username Must be Unique");
+                throw new UniqueColumnException("username Unique","api/v1.0/user/create");
             }
 
             User NEW_USER = new User();
@@ -107,22 +112,25 @@ public class MyUserDetailService implements UserDetailsService {
             }
             catch (Exception e)
             {
-                throw new DatabaseException("failed to Create",e.getCause());
+                throw new DatabaseException("failed to Create","api/v1.0/user/create");
             }
             switch (userRequest.getRole().getRoleName())
             {
                 case "CUSTOMER":
-                    throw new DatabaseException("failed to Create");
+                    Customer NEW_CUSTOMER = new Customer();
+                    NEW_CUSTOMER.setUser(NEW_USER);
+                    customerRepo.save(NEW_CUSTOMER) ;
+                    return "Customer created Successfully";
 
                 case "SUPPLIER":
 
                     Supplier NEW_SUPPLIER = new Supplier();
                     NEW_SUPPLIER.setUser(NEW_USER);
                     supplierRepo.save(NEW_SUPPLIER) ;
-                    return "User created Succesfully";
+                    return "Supplier created Successfully";
 
                 default:
-                    throw new DatabaseException("failed to Create");
+                    throw new DatabaseException("failed to Create","api/v1.0/user/create");
 
             }
 

@@ -5,31 +5,25 @@ import java.time.LocalDate;
 
 public class DatabaseException extends RuntimeException{
 
-    private LocalDate createdAt = LocalDate.now();
-    private  String error ;
-    private Throwable cause ;
+    private LocalDate timestamp =LocalDate.now();
+    private String path;
 
-    public DatabaseException(String error,Throwable cause ) {
-        super(error, cause);
-        this.error = error;
-        this.cause = cause;
+    public DatabaseException(String message, String path) {
+        super(message);
+        this.path = path;
     }
 
-    public DatabaseException(String error) {
-        super(error);
-        this.error = error;
+    public LocalDate getTimestamp() {
+        return timestamp;
     }
 
-    public LocalDate getCreatedAt() {
-        return createdAt;
+
+
+    public String getPath() {
+        return path;
     }
 
-    public String getError() {
-        return error;
-    }
-
-    @Override
-    public Throwable getCause() {
-        return cause;
+    public void setPath(String path) {
+        this.path = path;
     }
 }

@@ -16,9 +16,10 @@ public class ExceptionController {
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<?> throwNotFoundException(NotFoundException exception){
         ExceptionResponse exceptionResponse = new ExceptionResponse(
-                exception.getCreatedAt(),
-                exception.getError(),
-                exception.getHelpingMessage()
+               exception.getTimestamp(),
+                HttpStatus.NOT_FOUND.value(),
+                exception.getMessage(),
+                exception.getPath()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
     }
@@ -26,18 +27,20 @@ public class ExceptionController {
     @ExceptionHandler(value = UniqueColumnException.class)
     public ResponseEntity<?> throwUniqueColumnException(UniqueColumnException exception){
         ExceptionResponse exceptionResponse = new ExceptionResponse(
-                exception.getCreatedAt(),
-                exception.getError(),
-                exception.getHelpingMessage()
+                exception.getTimestamp(),
+                HttpStatus.NOT_FOUND.value(),
+                exception.getMessage(),
+                exception.getPath()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
     @ExceptionHandler(value = BadRequestException.class)
     public ResponseEntity<?> throwBadRequestException(BadRequestException exception){
         ExceptionResponse exceptionResponse = new ExceptionResponse(
-                exception.getCreatedAt(),
-                exception.getError(),
-                exception.getHelpingMessage()
+                exception.getTimestamp(),
+                HttpStatus.BAD_REQUEST.value(),
+                exception.getMessage(),
+                exception.getPath()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
@@ -45,9 +48,10 @@ public class ExceptionController {
     @ExceptionHandler(value = DatabaseException.class)
     public ResponseEntity<?> throwDatabaseException(DatabaseException exception){
         ExceptionResponse exceptionResponse = new ExceptionResponse(
-                exception.getCreatedAt(),
-                exception.getError(),
-                exception.getCause()
+                exception.getTimestamp(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                exception.getMessage(),
+                exception.getPath()
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
     }

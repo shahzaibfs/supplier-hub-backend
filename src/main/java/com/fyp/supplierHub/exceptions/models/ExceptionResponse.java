@@ -3,31 +3,38 @@ package com.fyp.supplierHub.exceptions.models;
 import java.time.LocalDate;
 
 public class ExceptionResponse {
-    private LocalDate createdAt ;
-    private String error ;
-    private String helpingMessage;
-    private Throwable cause ;
+    private LocalDate timestamp ;
+    private int status ;
+    private String error;
+    private String path ;
 
-    public ExceptionResponse(LocalDate localDate, String error, String helpingMessage) {
-        this.createdAt = localDate;
+    public ExceptionResponse(LocalDate timestamp, int status, String error, String path) {
+        this.timestamp = timestamp;
+        this.status = status;
         this.error = error;
-        this.helpingMessage = helpingMessage;
+        this.path = path;
     }
-    public ExceptionResponse(LocalDate localDate, String error, Throwable cause) {
-        this.createdAt = localDate;
+
+    public ExceptionResponse(int status, String error, String path) {
+        this.status = status;
         this.error = error;
-        this.cause = cause;
+        this.path = path;
     }
 
-    public ExceptionResponse() {
+    public LocalDate getTimestamp() {
+        return timestamp;
     }
 
-    public LocalDate getLocalDate() {
-        return createdAt;
+    public void setTimestamp(LocalDate timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public void setLocalDate(LocalDate localDate) {
-        this.createdAt = localDate;
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getError() {
@@ -38,19 +45,11 @@ public class ExceptionResponse {
         this.error = error;
     }
 
-    public String getHelpingMessage() {
-        return helpingMessage;
+    public String getPath() {
+        return path;
     }
 
-    public void setHelpingMessage(String helpingMessage) {
-        this.helpingMessage = helpingMessage;
-    }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
-
-    public Throwable getCause() {
-        return cause;
+    public void setPath(String path) {
+        this.path = path;
     }
 }

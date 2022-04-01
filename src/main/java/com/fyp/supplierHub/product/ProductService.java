@@ -50,7 +50,7 @@ public class ProductService {
 
     public Product loadOne (Integer id){
         Optional <Product> EXISTING_PRODUCT = Optional.ofNullable(productRepo.findById(id)
-                .orElseThrow(()-> new NotFoundException("Product Not found")));
+                .orElseThrow(()-> new NotFoundException("ID Not Found!","api/v1.0/product/"+id)));
         return EXISTING_PRODUCT.get() ;
     }
 

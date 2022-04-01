@@ -23,7 +23,7 @@ public class Supplier {
     @Column(name = "supplier_bio")
     private String supplierBio;
     @Column(name = "supplier_contact_no")
-    private long supplierContactNo;
+    private String supplierContactNo;
     @Column(name = "brand_name")
     private String brandName;
     @Column(name = "brand_owner_name")
@@ -55,7 +55,7 @@ public class Supplier {
     @OneToMany( mappedBy = "supplier",cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private Set<Product> products ;
 
-    public Supplier(int supplierId, String supplierFirstname, String supplierLastname, String supplierProfileUrl, String supplierBio, long supplierContactNo, String brandName, String brandOwnerName, User user, Set<SupplierBrandAddresses> supplierBrandAddresses, Instagram instagram, Facebook facebook) {
+    public Supplier(int supplierId, String supplierFirstname, String supplierLastname, String supplierProfileUrl, String supplierBio, String supplierContactNo, String brandName, String brandOwnerName, User user, Set<SupplierBrandAddresses> supplierBrandAddresses, Instagram instagram, Facebook facebook) {
         this.supplierId = supplierId;
         this.supplierFirstname = supplierFirstname;
         this.supplierLastname = supplierLastname;
@@ -113,11 +113,11 @@ public class Supplier {
         this.supplierBio = supplierBio;
     }
 
-    public long getSupplierContactNo() {
+    public String getSupplierContactNo() {
         return supplierContactNo;
     }
 
-    public void setSupplierContactNo(long supplierContactNo) {
+    public void setSupplierContactNo(String supplierContactNo) {
         this.supplierContactNo = supplierContactNo;
     }
 
