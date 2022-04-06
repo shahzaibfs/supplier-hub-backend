@@ -120,14 +120,14 @@ public class MyUserDetailService implements UserDetailsService {
                     Customer NEW_CUSTOMER = new Customer();
                     NEW_CUSTOMER.setUser(NEW_USER);
                     customerRepo.save(NEW_CUSTOMER) ;
-                    return "Customer created Successfully";
+                    return NEW_USER.getUserName();
 
                 case "SUPPLIER":
 
                     Supplier NEW_SUPPLIER = new Supplier();
                     NEW_SUPPLIER.setUser(NEW_USER);
                     supplierRepo.save(NEW_SUPPLIER) ;
-                    return "Supplier created Successfully";
+                    return NEW_USER.getUserName();
 
                 default:
                     throw new DatabaseException("failed to Create","api/v1.0/user/create");
