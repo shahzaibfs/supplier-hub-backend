@@ -9,7 +9,8 @@ import com.fyp.supplierHub.exceptions.Exceptions.UniqueColumnException;
 import com.fyp.supplierHub.roles.Role;
 import com.fyp.supplierHub.supplier.entity.Supplier;
 import com.fyp.supplierHub.supplier.repository.SupplierRepo;
-import com.sun.istack.NotNull;
+import com.fyp.supplierHub.user.dtos.UserEditDto;
+import com.fyp.supplierHub.user.dtos.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -135,6 +136,34 @@ public class MyUserDetailService implements UserDetailsService {
             }
 
 
+    }
+
+    public  String editUser(String username ,UserEditDto userEditDto) throws NotFoundException,UniqueColumnException
+    {
+        User EXISTING_USER = getUserFromDatabase(username);
+
+        if(encoder.matches(userEditDto.getOldPassword(),EXISTING_USER.getUserPassword())){
+            User NON_UNIQUE_USER    = getUserFromDatabase(userEditDto.getUsername());
+            System.out.println(!NON_UNIQUE_USER.getUserName().equals(EXISTING_USER.getUserName()));
+            if(NON_UNIQUE_USER != null && !NON_UNIQUE_USER.getUserName().equals(EXISTING_USER.getUserName()) ){
+                throw new UniqueColumnException("UserName Must Be Unique","/api/v1.0/user/edit");
+            }else{
+                System.out.println(userEditDto.getPassword());
+                EXISTING_USER.setUserEmail(userEditDto.getEmail());
+                EXISTING_USER.setUserName((userEditDto.getUsername()));
+                if(userEditDto.getPassword().isEmpty()||userEditDto.getPassword().isBlank()){
+                    userRepo.save(EXISTING_USER);
+                    return "Successfully Edited the User" ;
+                }
+
+                EXISTING_USER.setUserPassword(encoder.encode(userEditDto.getPassword()));
+                System.out.println("iam not blacnk");
+                return "Successfully Edited the User" ;
+            }
+
+        }else{
+            throw new NotFoundException("Please Provide the Correct Password" ,"/api/v1.0/user/edit");
+        }
     }
 
 }

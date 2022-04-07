@@ -1,4 +1,4 @@
-package com.fyp.supplierHub.user;
+package com.fyp.supplierHub.user.dtos;
 
 import com.fyp.supplierHub.roles.Role;
 

@@ -1,8 +1,10 @@
 package com.fyp.supplierHub.user;
 
+import com.fyp.supplierHub.user.dtos.UserEditDto;
+import com.fyp.supplierHub.user.dtos.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,8 +20,13 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    final ResponseEntity<?> createNewUser(@RequestBody UserRequest newUser)
+    public  ResponseEntity<?> createNewUser(@RequestBody UserRequest newUser)
     {
         return ResponseEntity.ok(myUserDetailService.createNewUser(newUser));
     }
+    @PostMapping("/edit")
+    private ResponseEntity<?> editExistingUser(Authentication authentication, @RequestBody UserEditDto userEditDto){
+        return ResponseEntity.ok(myUserDetailService.editUser(authentication.getName(),userEditDto));
+    }
+
 }
