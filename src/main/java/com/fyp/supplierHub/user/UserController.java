@@ -4,6 +4,7 @@ import com.fyp.supplierHub.user.dtos.UserEditDto;
 import com.fyp.supplierHub.user.dtos.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,11 @@ public class UserController {
     @PostMapping("/edit")
     private ResponseEntity<?> editExistingUser(Authentication authentication, @RequestBody UserEditDto userEditDto){
         return ResponseEntity.ok(myUserDetailService.editUser(authentication.getName(),userEditDto));
+    }
+
+    @GetMapping
+    private ResponseEntity<?> authenticatedUser(Authentication authentication) {
+        return ResponseEntity.ok(myUserDetailService.getUserFromDatabase(authentication.getName()));
     }
 
 }

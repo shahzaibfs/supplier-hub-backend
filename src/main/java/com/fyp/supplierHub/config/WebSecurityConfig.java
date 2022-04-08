@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -36,13 +37,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.GET,"/api/v1.0/product/**").permitAll()
+                .antMatchers(HttpMethod.PUT,"/api/v1.0/product/**").permitAll()
+                .antMatchers("/api/v1.0/supplier").hasAuthority("ROLE_SUPPLIER")
+                .antMatchers(HttpMethod.GET,"/api/v1.0/user").hasAnyAuthority("ROlE_CUSTOMER","ROLE_SUPPLIER")
                 .antMatchers(
                         "/api/v1.0/authenticate",
                         "/api/v1.0/user/**",
                         "/api/v1.0/roles/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/v1.0/product/**").permitAll()
-                .antMatchers(HttpMethod.PUT,"/api/v1.0/product/**").permitAll()
-                .antMatchers("/api/v1.0/supplier").hasAuthority("ROLE_SUPPLIER")
                 .anyRequest()
                 .authenticated()
                 .and()

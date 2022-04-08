@@ -78,7 +78,7 @@ public class MyUserDetailService implements UserDetailsService {
     {
 
         Optional<User> EXISTING_USER = userRepo.findByUserName(username);
-        EXISTING_USER.orElseThrow( ()-> new NotFoundException("INVALID Credentials","Please provide the Correct Username and Password") );
+        EXISTING_USER.orElseThrow( ()-> new NotFoundException("INVALID Credentials","/api/v1.0/user") );
 
         return EXISTING_USER.get();
 
@@ -157,6 +157,7 @@ public class MyUserDetailService implements UserDetailsService {
                 }
 
                 EXISTING_USER.setUserPassword(encoder.encode(userEditDto.getPassword()));
+                userRepo.save(EXISTING_USER);
                 System.out.println("iam not blacnk");
                 return "Successfully Edited the User" ;
             }
