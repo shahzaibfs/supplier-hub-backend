@@ -37,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.GET,"/api/v1.0/category/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/v1.0/product/**").permitAll()
                 .antMatchers(HttpMethod.PUT,"/api/v1.0/product/**").permitAll()
                 .antMatchers("/api/v1.0/supplier").hasAuthority("ROLE_SUPPLIER")
