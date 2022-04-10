@@ -23,6 +23,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final MyUserDetailService myUserDetailService ;
     private final JwtRequestFilterBefore jwtRequestFilterBefore;
     private final PasswordEncoder passwordEncoder ;
+    private static final String[] AUTH_WHITELIST = {
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
 
     @Autowired
     public WebSecurityConfig(MyUserDetailService myUserDetailService, JwtRequestFilterBefore jwtRequestFilterBefore, PasswordEncoder passwordEncoder) {
@@ -37,6 +43,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers(
+                        "/swagger-ui/**",
+                        "/v2/api-docs/**",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html**",
+                        "/webjars/**",
+                        "favicon.ico")
+                .permitAll()
                 .antMatchers(HttpMethod.GET,"/api/v1.0/category/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/v1.0/product/**").permitAll()
                 .antMatchers(HttpMethod.PUT,"/api/v1.0/product/**").permitAll()
@@ -46,7 +60,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1.0/authenticate",
                         "/api/v1.0/user/**",
                         "/api/v1.0/roles/**").permitAll()
+
                 .anyRequest()
+
                 .authenticated()
                 .and()
                 .sessionManagement()
