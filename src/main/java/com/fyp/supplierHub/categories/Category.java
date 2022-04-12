@@ -1,5 +1,10 @@
 package com.fyp.supplierHub.categories;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fyp.supplierHub.product.Product;
+import com.fyp.supplierHub.supplier.entity.Supplier;
+import org.hibernate.annotations.Fetch;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -20,13 +25,26 @@ public class Category {
     )
     private Integer categoryParent;
 
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(
             name = "category_parent",
             referencedColumnName = "category_id",
             insertable = false
     )
     private List<Category> categories ;
+
+
+    @OneToMany(mappedBy = "category" ,fetch = FetchType.LAZY)
+    private Set<Product> products ;
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts
+            (Set<Product> products) {
+        this.products = products;
+    }
 
     public Integer getCategoryParent() {
         return categoryParent;

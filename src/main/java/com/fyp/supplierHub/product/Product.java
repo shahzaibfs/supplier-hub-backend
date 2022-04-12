@@ -1,7 +1,9 @@
 package com.fyp.supplierHub.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fyp.supplierHub.categories.Category;
 import com.fyp.supplierHub.supplier.entity.Supplier;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -46,7 +48,32 @@ public class Product {
     @JsonIgnore
     private Supplier supplier;
 
-    public Product(int productId, String productName, long productPrice, String productDesc, String productDetails, String productCoverUrl, String productWeight, LocalDate dateOfCreation, int productSize, int productMinOrder, Supplier supplier) {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categ_id",referencedColumnName = "category_id")
+    private Category category ;
+
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Product(
+            int productId,
+            String productName,
+            long productPrice,
+            String productDesc,
+            String productDetails
+            , String productCoverUrl,
+            String productWeight,
+            LocalDate dateOfCreation,
+            int productSize,
+            int productMinOrder,
+            Supplier supplier) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;

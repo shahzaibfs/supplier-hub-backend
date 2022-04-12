@@ -11,8 +11,8 @@ import java.util.Set;
 public interface CategoryRepository extends JpaRepository<Category,Integer> {
 
 
-    @Override
+
     @Query( "SELECT c FROM Category c WHERE c.categoryParent=NULL")
-    List<Category> findAll() ;
+    List<Category> findAllWhereCategIsNull() ;
 
 }

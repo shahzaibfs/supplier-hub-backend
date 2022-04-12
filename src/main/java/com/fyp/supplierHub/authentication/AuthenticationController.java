@@ -11,6 +11,8 @@ import com.fyp.supplierHub.user.User;
 import com.fyp.supplierHub.user.MyUserDetailService;
 import com.fyp.supplierHub.supplier.service.SupplierServiceImp;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
+@Api(value = "this controller does authenticaiton and give response back as a token ")
 @RequestMapping("api/v1.0/authenticate")
 public class AuthenticationController {
 
@@ -49,7 +52,10 @@ public class AuthenticationController {
 
     /************* this route will check if user is authenticated or not if
      authenticated then return the valid jwt token with user Details  with response of 200  ***********/
+
+
     @PostMapping
+    @ApiOperation(value = "give user back with jwt token " )
     public ResponseEntity<?> generateJwtToken (@RequestBody AuthRequest authRequest) throws RuntimeException
     {
         if(authRequest.getUsername().isEmpty() || authRequest.getPassword().isEmpty()){
