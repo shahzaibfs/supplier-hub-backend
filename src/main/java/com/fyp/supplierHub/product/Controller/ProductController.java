@@ -1,7 +1,9 @@
-package com.fyp.supplierHub.product;
+package com.fyp.supplierHub.product.Controller;
 
 
 import com.fyp.supplierHub.exceptions.Exceptions.NotFoundException;
+import com.fyp.supplierHub.product.enitity.Product;
+import com.fyp.supplierHub.product.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

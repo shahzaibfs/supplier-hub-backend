@@ -1,7 +1,7 @@
 package com.fyp.supplierHub.supplier.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fyp.supplierHub.product.Product;
+import com.fyp.supplierHub.product.enitity.Product;
 import com.fyp.supplierHub.user.User;
 
 import javax.persistence.*;

@@ -1,9 +1,7 @@
 package com.fyp.supplierHub.categories;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fyp.supplierHub.product.Product;
-import com.fyp.supplierHub.supplier.entity.Supplier;
-import org.hibernate.annotations.Fetch;
+import com.fyp.supplierHub.product.enitity.Product;
 
 import javax.persistence.*;
 import java.util.List;
@@ -35,6 +33,7 @@ public class Category {
 
 
     @OneToMany(mappedBy = "category" ,fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Product> products ;
 
     public Set<Product> getProducts() {

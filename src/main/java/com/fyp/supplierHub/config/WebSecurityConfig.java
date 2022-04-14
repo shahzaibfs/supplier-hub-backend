@@ -23,12 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final MyUserDetailService myUserDetailService ;
     private final JwtRequestFilterBefore jwtRequestFilterBefore;
     private final PasswordEncoder passwordEncoder ;
-    private static final String[] AUTH_WHITELIST = {
-            "/swagger-resources/**",
-            "/swagger-ui.html",
-            "/v2/api-docs",
-            "/webjars/**"
-    };
+
 
     @Autowired
     public WebSecurityConfig(MyUserDetailService myUserDetailService, JwtRequestFilterBefore jwtRequestFilterBefore, PasswordEncoder passwordEncoder) {
@@ -52,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "favicon.ico")
                 .permitAll()
                 .antMatchers(HttpMethod.GET,"/api/v1.0/category/**").permitAll()
+                .antMatchers("/api/v1.0/product-category/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/v1.0/product/**").permitAll()
                 .antMatchers(HttpMethod.PUT,"/api/v1.0/product/**").permitAll()
                 .antMatchers("/api/v1.0/supplier").hasAuthority("ROLE_SUPPLIER")

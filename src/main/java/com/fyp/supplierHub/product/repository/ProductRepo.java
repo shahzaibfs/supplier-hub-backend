@@ -1,5 +1,6 @@
-package com.fyp.supplierHub.product;
+package com.fyp.supplierHub.product.repository;
 
+import com.fyp.supplierHub.product.enitity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

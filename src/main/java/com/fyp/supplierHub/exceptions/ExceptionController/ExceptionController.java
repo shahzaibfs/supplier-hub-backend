@@ -16,7 +16,7 @@ public class ExceptionController {
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<?> throwNotFoundException(NotFoundException exception){
         ExceptionResponse exceptionResponse = new ExceptionResponse(
-               exception.getTimestamp(),
+                exception.getTimestamp(),
                 HttpStatus.NOT_FOUND.value(),
                 exception.getMessage(),
                 exception.getPath()

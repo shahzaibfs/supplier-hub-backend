@@ -1,6 +1,8 @@
-package com.fyp.supplierHub.product;
+package com.fyp.supplierHub.product.services;
 
 import com.fyp.supplierHub.exceptions.Exceptions.NotFoundException;
+import com.fyp.supplierHub.product.enitity.Product;
+import com.fyp.supplierHub.product.repository.ProductRepo;
 import com.fyp.supplierHub.supplier.entity.Supplier;
 import com.fyp.supplierHub.supplier.service.SupplierServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
