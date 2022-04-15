@@ -28,27 +28,7 @@ public class ProductService {
         return productRepo.findAll();
     }
 
-    public Product saveOrEdit(String username  ,Product product){
-        Supplier EXISTING_SUPPLIER =  supplierServiceImp.LoadAuthenticatedSupplier(username);
-        if(product.getProductId() > 0){
-            Product EXISTING_PRODUCT = productRepo.getProductByIdAndAuthenticatedUser(
-                    EXISTING_SUPPLIER.getSupplierId(),
-                    product.getProductId()
-            );
-            if(EXISTING_PRODUCT != null){
-                product.setSupplier(EXISTING_SUPPLIER);
-               return productRepo.save(product);
-            }else{
-                throw new RuntimeException("Id not found ") ;
-            }
 
-        }
-        product.setSupplier(EXISTING_SUPPLIER);
-        return productRepo.save(product) ;
-
-
-
-    }
 
     public Product loadOne (Integer id){
         Optional <Product> EXISTING_PRODUCT = Optional.ofNullable(productRepo.findById(id)

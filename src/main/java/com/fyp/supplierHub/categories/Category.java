@@ -94,4 +94,8 @@ public class Category {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
+
+    public Integer sizeOfCategories (){
+        return this.categories.size() ;
+    }
 }

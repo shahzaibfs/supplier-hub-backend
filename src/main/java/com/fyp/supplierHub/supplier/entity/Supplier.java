@@ -53,6 +53,7 @@ public class Supplier {
     private Facebook facebook ;
 
     @OneToMany( mappedBy = "supplier",cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Product> products ;
 
     public Supplier(int supplierId, String supplierFirstname, String supplierLastname, String supplierProfileUrl, String supplierBio, String supplierContactNo, String brandName, String brandOwnerName, User user, Set<SupplierBrandAddresses> supplierBrandAddresses, Instagram instagram, Facebook facebook) {

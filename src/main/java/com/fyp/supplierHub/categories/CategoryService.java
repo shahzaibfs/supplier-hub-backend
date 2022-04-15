@@ -7,5 +7,6 @@ public interface CategoryService {
 
 
     List<CategoryDTO> loadAllCategories();
+    Category loadById(int categoryId);
 
 }

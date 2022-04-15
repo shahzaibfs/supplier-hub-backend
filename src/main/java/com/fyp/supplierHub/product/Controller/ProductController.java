@@ -25,11 +25,6 @@ public class ProductController {
         return  ResponseEntity.ok(productService.loadAll());
     }
 
-    @PostMapping("/save-or-edit")
-    private ResponseEntity<?> saveOrEdit (@Autowired Authentication authentication , @RequestBody Product product){
-        return ResponseEntity.ok(productService.saveOrEdit(authentication.getName(),product));
-    }
-
     @PutMapping("/{productId}")
     public ResponseEntity<?> loadOne(@PathVariable Integer productId) throws NotFoundException {
         if(productId <0){

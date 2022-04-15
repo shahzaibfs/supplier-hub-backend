@@ -15,7 +15,6 @@ public class CategoryDTO {
     private String categoryPhotoUrl;
 
     private List<CategoryDTO> categories ;
-    private Set<Product> products ;
 
     public CategoryDTO() {
     }
@@ -60,11 +59,4 @@ public class CategoryDTO {
         this.categories = categories;
     }
 
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
 }
