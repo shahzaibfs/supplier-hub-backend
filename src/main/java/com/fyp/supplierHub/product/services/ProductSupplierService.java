@@ -36,8 +36,12 @@ public class ProductSupplierService {
 
     public ProductDto saveOrEdit(String username  , ProductDto productDto){
         Supplier EXISTING_SUPPLIER =  supplierServiceImp.LoadAuthenticatedSupplier(username);
-        Category Existing_Category = categoryService.loadById(productDto.getCategory().getCategoryId());
+        Category Existing_Category = null;
 
+        if(productDto.getCategory().getCategoryId() != null )
+            Existing_Category = categoryService.loadById(productDto.getCategory().getCategoryId());
+        else
+            productDto.setCategory(null);
 
         //Todo: check if product is in our database
         if(productDto.getProductId() > 0){
@@ -48,8 +52,11 @@ public class ProductSupplierService {
                     ()-> new NotFoundException("Product not found ","/product-supplier/save-or-edit")
             );
             //Todo: check if category has children
-            if(Existing_Category.sizeOfCategories() <= 0) productDto.setCategory(Existing_Category) ;
-            else productDto.setCategory(null);
+            if(Existing_Category != null){
+                if(Existing_Category.sizeOfCategories() <= 0 ) productDto.setCategory(Existing_Category) ;
+                else productDto.setCategory(null);
+            }
+
 
             modelMapper.map(productDto,EXISTING_PRODUCT);
             EXISTING_PRODUCT =  productRepo.save(EXISTING_PRODUCT);
@@ -61,8 +68,10 @@ public class ProductSupplierService {
         }
         else{
             //Todo: check if category has children
-            if(Existing_Category.sizeOfCategories() <= 0) productDto.setCategory(Existing_Category) ;
-            else productDto.setCategory(null);
+            if(Existing_Category != null){
+                if(Existing_Category.sizeOfCategories() <= 0 ) productDto.setCategory(Existing_Category) ;
+                else productDto.setCategory(null);
+            }
 
             Product New_Product = new Product();
             New_Product.setSupplier(EXISTING_SUPPLIER);
