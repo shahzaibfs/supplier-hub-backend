@@ -10,10 +10,13 @@ import com.fyp.supplierHub.product.repository.ProductRepo;
 import com.fyp.supplierHub.supplier.entity.Supplier;
 import com.fyp.supplierHub.supplier.service.SupplierServiceImp;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.PropertiesBeanDefinitionReader;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -85,5 +88,25 @@ public class ProductSupplierService {
         }
 
     }
+    public List<ProductDto> getAllSupplierProducts (String username ){
+        Supplier Existing_Supplier  =  supplierServiceImp.LoadAuthenticatedSupplier(username);
+        List<Product> Existing_Supplier_Products = productRepo.findAllBySupplierId(Existing_Supplier.getSupplierId());
+        TypeToken<List<ProductDto>> typeToken = new TypeToken<>() {};
 
+        List<ProductDto> productDtoList = modelMapper.map(Existing_Supplier_Products,typeToken.getType());
+
+       return productDtoList;
+    }
+    @Transactional
+    public int deleteOne (String username,Integer productId){
+        Supplier EXISTING_SUPPLIER = supplierServiceImp.LoadAuthenticatedSupplier(username);
+        System.out.println(productId+""+EXISTING_SUPPLIER.getSupplierId());
+        int idDeleted  = productRepo.deleteProductById(EXISTING_SUPPLIER.getSupplierId(),productId);
+        if(idDeleted>0){
+            return idDeleted ;
+        }else{
+            throw new RuntimeException("product Not found and thus It's Not deleted ") ;
+        }
+
+    }
 }

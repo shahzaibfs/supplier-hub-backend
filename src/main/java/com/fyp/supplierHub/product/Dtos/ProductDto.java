@@ -135,4 +135,5 @@ public class ProductDto {
     public void setCategory(Category category) {
         this.category = category;
     }
+
 }

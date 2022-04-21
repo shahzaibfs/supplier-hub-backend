@@ -49,7 +49,7 @@ public class Product {
     private Supplier supplier;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "categ_id",referencedColumnName = "category_id")
     private Category category ;
 

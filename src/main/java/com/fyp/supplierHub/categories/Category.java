@@ -29,6 +29,7 @@ public class Category {
             referencedColumnName = "category_id",
             insertable = false
     )
+    @JsonIgnore
     private List<Category> categories ;
 
 
