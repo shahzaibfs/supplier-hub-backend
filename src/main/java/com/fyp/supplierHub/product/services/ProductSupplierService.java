@@ -98,7 +98,8 @@ public class ProductSupplierService {
     @Transactional
     public List<ProductDto> getAllSupplierProducts (String username ){
         Supplier Existing_Supplier  =  supplierServiceImp.LoadAuthenticatedSupplier(username);
-        List<Product> Existing_Supplier_Products = productRepo.findAllBySupplierId(Existing_Supplier.getSupplierId());
+        List<Product> Existing_Supplier_Products = productRepo
+                .findAllWithSupplierIdAndOutOfStockNull(Existing_Supplier.getSupplierId());
         TypeToken<List<ProductDto>> typeToken = new TypeToken<>() {};
 
         List<ProductDto> productDtoList = modelMapper.map(Existing_Supplier_Products,typeToken.getType());
@@ -128,18 +129,18 @@ public class ProductSupplierService {
                                 , "/api/v1.0/product-supplier/update-to-outOfStock"));
         ProductDto productDto  = new ProductDto();
 
-        System.out.println(Existing_Product.getOutOfStock() != null);
+
         if(Existing_Product.getOutOfStock() != null)  throw new BadRequestException("Product is Already in Out fo Stock"
                 , "/api/v1.0/product-supplier/update-to-outOfStock");
 
         // Todo : setup out of stock and assign to Existing product
         OutOfStock outOfStock = new OutOfStock(productOutOfStockReqDto.getOutOfStockDate());
-        outOfStock.setProduct(Existing_Product);
+        outOfStock = outOfStockRepo.save(outOfStock);
 
-        outOfStock =  outOfStockRepo.save(outOfStock);
+        Existing_Product.setOutOfStock(outOfStock);
 
+        Existing_Product = productRepo.save(Existing_Product);
         modelMapper.map(Existing_Product,productDto);
-        productDto.setOutOfStock(outOfStock);
 
         return productDto ;
 
@@ -159,16 +160,28 @@ public class ProductSupplierService {
                 , "/api/v1.0/product-supplier/update-to-outOfStock");
 
         OutOfStock outOfStock  = Existing_Product.getOutOfStock();
+        Existing_Product.setOutOfStock(null);
+
+        Existing_Product = productRepo.save(Existing_Product);
+
         outOfStockRepo.delete(outOfStock);
 
         modelMapper.map(Existing_Product,productDto);
-        productDto.setOutOfStock(null);
-         return productDto ;
+
+        return productDto ;
 
 
 
     }
 
+    public List<ProductDto> getAllOutOfStockProducts(String username){
+        Supplier Existing_Supplier = supplierServiceImp.LoadAuthenticatedSupplier(username);
+        List<Product> products= productRepo.getAllSupplierProductsInOutOfStockTable(Existing_Supplier.getSupplierId());
+        TypeToken<List<ProductDto>> typeToken = new TypeToken<List<ProductDto>>(){} ;
+        List <ProductDto>  productDtoList = modelMapper.map(products,typeToken.getType());
+
+        return productDtoList ;
+    }
 
 
     }

@@ -24,8 +24,13 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
     int deleteProductById(int supplierId , int productId) ;
 
     @Query(
-            "SELECT p FROM Product p WHERE p.supplier.supplierId = ?1"
+            "SELECT p FROM Product p WHERE p.outOfStock = NULL AND p.supplier.supplierId = ?1"
     )
-    List<Product> findAllBySupplierId(Integer id);
+    List<Product> findAllWithSupplierIdAndOutOfStockNull(Integer id);
+
+    @Query(
+            "SELECT p FROM Product p WHERE p.outOfStock != NULL AND p.supplier.supplierId = ?1"
+    )
+    List<Product> getAllSupplierProductsInOutOfStockTable(Integer id);
 
 }

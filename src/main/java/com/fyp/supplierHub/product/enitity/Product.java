@@ -52,7 +52,8 @@ public class Product {
     @JoinColumn(name = "categ_id",referencedColumnName = "category_id")
     private Category category ;
 
-    @OneToOne(mappedBy = "product")
+    @OneToOne
+    @JoinColumn(name="out_of_stock_id",referencedColumnName = "out_of_stock_id")
     private OutOfStock outOfStock ;
 
 

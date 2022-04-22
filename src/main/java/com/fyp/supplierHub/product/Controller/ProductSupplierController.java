@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin
 @RestController
 @RequestMapping(value = "api/v1.0/product-supplier")
@@ -56,5 +58,10 @@ public class ProductSupplierController {
                 productSupplierService.removeFromOutOfStock(authentication.getName(),
                         productId)
         );
+    }
+
+    @GetMapping("/get-all-outOfStock-products")
+    private ResponseEntity <List<ProductDto>> getAllOutOfStockProducts (Authentication authentication){
+        return ResponseEntity.ok(productSupplierService.getAllOutOfStockProducts(authentication.getName()));
     }
 }
