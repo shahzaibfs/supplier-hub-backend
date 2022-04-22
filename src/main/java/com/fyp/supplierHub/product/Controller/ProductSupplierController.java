@@ -1,6 +1,7 @@
 package com.fyp.supplierHub.product.Controller;
 
 import com.fyp.supplierHub.product.Dtos.ProductDto;
+import com.fyp.supplierHub.product.Dtos.ProductOutOfStockReqDto;
 import com.fyp.supplierHub.product.enitity.Product;
 import com.fyp.supplierHub.product.services.ProductService;
 import com.fyp.supplierHub.product.services.ProductSupplierService;
@@ -33,7 +34,27 @@ public class ProductSupplierController {
     }
 
     @DeleteMapping("/delete-product/{productId}")
-    public ResponseEntity<?> deleteOne(@Autowired Authentication authentication, @PathVariable Integer productId){
+    private  ResponseEntity<?> deleteOne(@Autowired Authentication authentication, @PathVariable Integer productId){
         return  ResponseEntity.ok(productSupplierService.deleteOne(authentication.getName(),productId));
+    }
+
+    @PostMapping("/update-to-outOfStock")
+    private ResponseEntity<ProductDto> updateToOutOfStock (Authentication authentication
+            ,@RequestBody ProductOutOfStockReqDto productOutOfStockReqDto)
+    {
+
+        return ResponseEntity.ok(
+                productSupplierService.updateToOutOfStockTable(authentication.getName()
+                        ,productOutOfStockReqDto)
+        );
+    }
+
+    @DeleteMapping("/remove-from-outOfStock/{productId}")
+    private ResponseEntity<ProductDto> removeFromoutOfstock (Authentication authentication,
+                                                             @PathVariable int productId){
+        return ResponseEntity.ok(
+                productSupplierService.removeFromOutOfStock(authentication.getName(),
+                        productId)
+        );
     }
 }

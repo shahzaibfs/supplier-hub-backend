@@ -5,7 +5,10 @@ import com.fyp.supplierHub.categories.CategoryService;
 import com.fyp.supplierHub.exceptions.Exceptions.BadRequestException;
 import com.fyp.supplierHub.exceptions.Exceptions.NotFoundException;
 import com.fyp.supplierHub.product.Dtos.ProductDto;
+import com.fyp.supplierHub.product.Dtos.ProductOutOfStockReqDto;
+import com.fyp.supplierHub.product.enitity.OutOfStock;
 import com.fyp.supplierHub.product.enitity.Product;
+import com.fyp.supplierHub.product.repository.OutOfStockRepo;
 import com.fyp.supplierHub.product.repository.ProductRepo;
 import com.fyp.supplierHub.supplier.entity.Supplier;
 import com.fyp.supplierHub.supplier.service.SupplierServiceImp;
@@ -22,19 +25,23 @@ import java.util.Optional;
 @Service
 public class ProductSupplierService {
     private final ProductRepo productRepo ;
+    private final OutOfStockRepo outOfStockRepo ;
     private final SupplierServiceImp supplierServiceImp;
     private final CategoryService categoryService ;
+
     private final ModelMapper modelMapper ;
 
     @Autowired
     public ProductSupplierService(ProductRepo productRepo,
                                   SupplierServiceImp supplierServiceImp,
                                   CategoryService categoryService,
-                                  ModelMapper modelMapper) {
+                                  ModelMapper modelMapper,
+                                  OutOfStockRepo outOfStockRepo) {
         this.productRepo = productRepo;
         this.supplierServiceImp = supplierServiceImp;
         this.categoryService = categoryService;
         this.modelMapper = modelMapper ;
+        this.outOfStockRepo = outOfStockRepo;
     }
 
     public ProductDto saveOrEdit(String username  , ProductDto productDto){
@@ -88,6 +95,7 @@ public class ProductSupplierService {
         }
 
     }
+    @Transactional
     public List<ProductDto> getAllSupplierProducts (String username ){
         Supplier Existing_Supplier  =  supplierServiceImp.LoadAuthenticatedSupplier(username);
         List<Product> Existing_Supplier_Products = productRepo.findAllBySupplierId(Existing_Supplier.getSupplierId());
@@ -109,4 +117,58 @@ public class ProductSupplierService {
         }
 
     }
-}
+
+    public ProductDto updateToOutOfStockTable (String username , ProductOutOfStockReqDto productOutOfStockReqDto) {
+        Supplier Existing_Supplier  =  supplierServiceImp . LoadAuthenticatedSupplier(username );
+        Product Existing_Product  = productRepo
+                .getProductByIdAndAuthenticatedUser(Existing_Supplier.getSupplierId()
+                        ,productOutOfStockReqDto.getProductId())
+                .orElseThrow(
+                        ()-> new NotFoundException("Product Not Found PLease Provide Correct Product "
+                                , "/api/v1.0/product-supplier/update-to-outOfStock"));
+        ProductDto productDto  = new ProductDto();
+
+        System.out.println(Existing_Product.getOutOfStock() != null);
+        if(Existing_Product.getOutOfStock() != null)  throw new BadRequestException("Product is Already in Out fo Stock"
+                , "/api/v1.0/product-supplier/update-to-outOfStock");
+
+        // Todo : setup out of stock and assign to Existing product
+        OutOfStock outOfStock = new OutOfStock(productOutOfStockReqDto.getOutOfStockDate());
+        outOfStock.setProduct(Existing_Product);
+
+        outOfStock =  outOfStockRepo.save(outOfStock);
+
+        modelMapper.map(Existing_Product,productDto);
+        productDto.setOutOfStock(outOfStock);
+
+        return productDto ;
+
+    }
+
+    public ProductDto removeFromOutOfStock (String username ,int productId) {
+        Supplier Existing_Supplier  =  supplierServiceImp . LoadAuthenticatedSupplier(username );
+        Product Existing_Product  = productRepo
+                .getProductByIdAndAuthenticatedUser(Existing_Supplier.getSupplierId()
+                        ,productId)
+                .orElseThrow(
+                        ()-> new NotFoundException("Product Not Found PLease Provide Correct Product "
+                                , "/api/v1.0/product-supplier/update-to-outOfStock"));
+        ProductDto productDto  = new ProductDto();
+
+        if(Existing_Product.getOutOfStock() == null) throw new BadRequestException("Product is Already In The Stock"
+                , "/api/v1.0/product-supplier/update-to-outOfStock");
+
+        OutOfStock outOfStock  = Existing_Product.getOutOfStock();
+        outOfStockRepo.delete(outOfStock);
+
+        modelMapper.map(Existing_Product,productDto);
+        productDto.setOutOfStock(null);
+         return productDto ;
+
+
+
+    }
+
+
+
+    }

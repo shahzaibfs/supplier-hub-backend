@@ -39,8 +39,7 @@ public class Product {
 
     @Column(name = "is_new_product")
     private boolean isNewProduct =false ;
-    @Column(name = "out_of_stock")
-    private boolean outOfStock =false ;
+
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -53,6 +52,17 @@ public class Product {
     @JoinColumn(name = "categ_id",referencedColumnName = "category_id")
     private Category category ;
 
+    @OneToOne(mappedBy = "product")
+    private OutOfStock outOfStock ;
+
+
+    public OutOfStock getOutOfStock() {
+        return outOfStock;
+    }
+
+    public void setOutOfStock(OutOfStock outOfStock) {
+        this.outOfStock = outOfStock;
+    }
 
     public Category getCategory() {
         return category;
@@ -198,13 +208,7 @@ public class Product {
         isNewProduct = newProduct;
     }
 
-    public boolean isOutOfStock() {
-        return outOfStock;
-    }
 
-    public void setOutOfStock(boolean outOfStock) {
-        this.outOfStock = outOfStock;
-    }
 
 
 

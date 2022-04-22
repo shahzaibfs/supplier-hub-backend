@@ -2,6 +2,7 @@ package com.fyp.supplierHub.product.Dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fyp.supplierHub.categories.Category;
+import com.fyp.supplierHub.product.enitity.OutOfStock;
 import com.fyp.supplierHub.supplier.entity.Supplier;
 
 import javax.persistence.Column;
@@ -25,15 +26,25 @@ public class ProductDto {
     private LocalDate dateOfCreation ;
 
     private boolean isNewProduct ;
-    private boolean outOfStock ;
+
 
     private Category category ;
+    private OutOfStock outOfStock ;
 
     public ProductDto() {
     }
 
     public int getProductId() {
         return productId;
+    }
+
+
+    public OutOfStock getOutOfStock() {
+        return outOfStock;
+    }
+
+    public void setOutOfStock(OutOfStock outOfStock) {
+        this.outOfStock = outOfStock;
     }
 
     public void setProductId(int productId) {
@@ -120,13 +131,8 @@ public class ProductDto {
         isNewProduct = newProduct;
     }
 
-    public boolean isOutOfStock() {
-        return outOfStock;
-    }
 
-    public void setOutOfStock(boolean outOfStock) {
-        this.outOfStock = outOfStock;
-    }
+
 
     public Category getCategory() {
         return category;
