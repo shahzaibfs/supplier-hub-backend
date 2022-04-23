@@ -12,7 +12,7 @@ public interface CategoryRepository extends JpaRepository<Category,Integer> {
 
 
 
-    @Query( "SELECT c FROM Category c WHERE c.categoryParent=NULL")
+    @Query( "SELECT c FROM Category c WHERE c.categoryParent=NULL order by c.categoryName asc")
     List<Category> findAllWhereCategIsNull() ;
 
 }
