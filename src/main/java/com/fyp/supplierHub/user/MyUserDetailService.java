@@ -142,27 +142,30 @@ public class MyUserDetailService implements UserDetailsService {
     {
         User EXISTING_USER = getUserFromDatabase(username);
 
-        if(encoder.matches(userEditDto.getOldPassword(),EXISTING_USER.getUserPassword())){
-            User NON_UNIQUE_USER    = getUserFromDatabase(userEditDto.getUsername());
-            System.out.println(!NON_UNIQUE_USER.getUserName().equals(EXISTING_USER.getUserName()));
-            if(NON_UNIQUE_USER != null && !NON_UNIQUE_USER.getUserName().equals(EXISTING_USER.getUserName()) ){
-                throw new UniqueColumnException("UserName Must Be Unique","/api/v1.0/user/edit");
-            }else{
-                System.out.println(userEditDto.getPassword());
-                EXISTING_USER.setUserEmail(userEditDto.getEmail());
-                EXISTING_USER.setUserName((userEditDto.getUsername()));
-                if(userEditDto.getPassword().isEmpty()||userEditDto.getPassword().isBlank()){
-                    userRepo.save(EXISTING_USER);
-                    return "Successfully Edited the User" ;
-                }
+        if(encoder.matches(userEditDto.getOldPassword(),EXISTING_USER.getUserPassword()))
+        {
+            if (!EXISTING_USER.getUserName().equals(userEditDto.getUsername()))
+            {
+                boolean NON_UNIQUE_USER = userRepo.existsUserByUserName(userEditDto.getUsername());
+                System.out.println(userRepo.existsUserByUserName(userEditDto.getUsername()));
 
-                EXISTING_USER.setUserPassword(encoder.encode(userEditDto.getPassword()));
+                if (NON_UNIQUE_USER) throw new UniqueColumnException("UserName Must Be Unique", "/api/v1.0/user/edit");
+
+                EXISTING_USER.setUserName((userEditDto.getUsername()));
+            }
+            EXISTING_USER.setUserEmail(userEditDto.getEmail());
+
+            if(userEditDto.getPassword().isEmpty()||userEditDto.getPassword().isBlank()){
                 userRepo.save(EXISTING_USER);
-                System.out.println("iam not blacnk");
                 return "Successfully Edited the User" ;
             }
+            EXISTING_USER.setUserPassword(encoder.encode(userEditDto.getPassword()));
+            userRepo.save(EXISTING_USER);
+            System.out.println("iam not blank");
+            return "Successfully Edited the User" ;
 
-        }else{
+        }
+        else{
             throw new NotFoundException("Please Provide the Correct Password" ,"/api/v1.0/user/edit");
         }
     }

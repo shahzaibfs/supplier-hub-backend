@@ -14,4 +14,6 @@ public interface UserRepo extends JpaRepository<User,Integer> {
 
     @Query("SELECT COUNT(u.userName) from User u where u.userName =?1")
     int findByUsername(String username);
+
+    boolean existsUserByUserName (String username);
 }

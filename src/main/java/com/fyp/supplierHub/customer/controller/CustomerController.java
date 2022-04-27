@@ -1,13 +1,11 @@
 package com.fyp.supplierHub.customer.controller;
 
+import com.fyp.supplierHub.customer.models.CustomerEditDto;
 import com.fyp.supplierHub.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -25,5 +23,12 @@ public class CustomerController {
     private ResponseEntity<?> getAuthenticatedCustomer(Authentication authentication){
         return ResponseEntity.ok(customerService.getAuthenticatedCustomer(authentication.getName()));
     }
+    @PostMapping("/edit")
+    private ResponseEntity <CustomerEditDto> editCustomerDetails (Authentication authentication,@RequestBody CustomerEditDto customerEditDto){
+       String username  = authentication.getName();
+        return ResponseEntity.ok(customerService.editCustomerDetails(username,customerEditDto));
+    }
+
+
 
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("api/v1.0/product")
 public class ProductController {
@@ -32,8 +33,5 @@ public class ProductController {
         }
         return  ResponseEntity.ok(productService.loadOne(productId));
     }
-    @DeleteMapping("/{productId}")
-    public ResponseEntity<?> deleteOne(@Autowired Authentication authentication, @PathVariable Integer productId){
-        return  ResponseEntity.ok(productService.deleteOne(authentication.getName(),productId));
-    }
+
 }

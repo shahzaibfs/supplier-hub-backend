@@ -51,9 +51,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/api/v1.0/product/**").permitAll()
                 .antMatchers(HttpMethod.PUT,"/api/v1.0/product/**").permitAll()
                 .antMatchers("/api/v1.0/supplier").hasAuthority("ROLE_SUPPLIER")
+                .antMatchers("/api/v1.0/customer/**").hasAuthority("ROLE_CUSTOMER")
+                .antMatchers("api/v1.0/customer-shipping-address/**").hasAuthority("ROLE_CUSTOMER")
                 .antMatchers("/api/v1.0/product-supplier/**").hasAuthority("ROLE_SUPPLIER")
                 .antMatchers(HttpMethod.GET,"/api/v1.0/user")
-                .hasAnyAuthority("ROlE_CUSTOMER","ROLE_SUPPLIER")
+                .hasAnyAuthority("ROLE_CUSTOMER","ROLE_SUPPLIER")
                 .antMatchers(
                         "/api/v1.0/authenticate",
                         "/api/v1.0/user/**",

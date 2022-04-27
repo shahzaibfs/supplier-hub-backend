@@ -36,17 +36,6 @@ public class ProductService {
         return EXISTING_PRODUCT.get() ;
     }
 
-    @Transactional
-    public int deleteOne (String username,Integer productId){
-        Supplier EXISTING_SUPPLIER = supplierServiceImp.LoadAuthenticatedSupplier(username);
-        System.out.println(productId+""+EXISTING_SUPPLIER.getSupplierId());
-        int idDeleted  = productRepo.deleteProductById(EXISTING_SUPPLIER.getSupplierId(),productId);
-        if(idDeleted>0){
-            return idDeleted ;
-        }else{
-            throw new RuntimeException("product Not found and thus It's Not deleted ") ;
-        }
 
-    }
 
 }

@@ -1,8 +1,10 @@
 package com.fyp.supplierHub.customer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fyp.supplierHub.user.User;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
@@ -34,14 +36,26 @@ public class Customer {
     @Column(name = "shop_name")
     private String shopName;
 
-    @OneToOne(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @JoinColumn(
             name = "user_id",
             referencedColumnName = "user_id",
             nullable = false
     )
+    @JsonIgnore
     private User user ;
 
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    private Set<ShippingAddress> shippingAddresses ;
+
+    public Set<ShippingAddress> getShippingAddresses() {
+        return shippingAddresses;
+    }
+
+    public void setShippingAddresses(Set<ShippingAddress> shippingAddresses) {
+        this.shippingAddresses = shippingAddresses;
+    }
 
     public Customer() {
     }

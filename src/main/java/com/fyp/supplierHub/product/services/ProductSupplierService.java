@@ -19,6 +19,8 @@ import org.springframework.beans.factory.support.PropertiesBeanDefinitionReader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +55,9 @@ public class ProductSupplierService {
         else
             productDto.setCategory(null);
 
+        productDto.setDateOfCreation(LocalDate.now());
+        productDto.setNewProduct(true);
+
         //Todo: check if product is in our database
         if(productDto.getProductId() > 0){
             Product EXISTING_PRODUCT = productRepo.getProductByIdAndAuthenticatedUser(
@@ -85,8 +90,8 @@ public class ProductSupplierService {
 
             Product New_Product = new Product();
             New_Product.setSupplier(EXISTING_SUPPLIER);
-
             modelMapper.map(productDto,New_Product);
+
             New_Product= productRepo.save(New_Product);
 
             productDto.setProductId(New_Product.getProductId());
@@ -109,7 +114,6 @@ public class ProductSupplierService {
     @Transactional
     public int deleteOne (String username,Integer productId){
         Supplier EXISTING_SUPPLIER = supplierServiceImp.LoadAuthenticatedSupplier(username);
-        System.out.println(productId+""+EXISTING_SUPPLIER.getSupplierId());
         int idDeleted  = productRepo.deleteProductById(EXISTING_SUPPLIER.getSupplierId(),productId);
         if(idDeleted>0){
             return idDeleted ;
