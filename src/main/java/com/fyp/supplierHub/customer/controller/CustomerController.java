@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
 @CrossOrigin
+@RestController
 @RequestMapping("api/v1.0/customer")
 public class CustomerController {
 

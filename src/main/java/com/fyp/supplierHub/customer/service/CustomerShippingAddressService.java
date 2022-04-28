@@ -4,10 +4,12 @@ import com.fyp.supplierHub.customer.entity.Customer;
 import com.fyp.supplierHub.customer.entity.ShippingAddress;
 import com.fyp.supplierHub.customer.models.ShippingAddressDto;
 import com.fyp.supplierHub.customer.repository.ShippingAddressRepo;
+import com.fyp.supplierHub.exceptions.Exceptions.BadRequestException;
 import com.fyp.supplierHub.exceptions.Exceptions.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,13 +22,14 @@ public class CustomerShippingAddressService {
 
     private final CustomerService customerService ;
 
-    public CustomerShippingAddressService(ModelMapper modelMapper, ShippingAddressRepo shippingAddressRepo ,CustomerService customerService) {
+    public CustomerShippingAddressService(ModelMapper modelMapper, ShippingAddressRepo shippingAddressRepo ,CustomerService customerService)
+    {
         this.modelMapper = modelMapper;
         this.shippingAddressRepo = shippingAddressRepo;
         this.customerService = customerService ;
     }
 
-    public List<ShippingAddressDto> findAll(String username)
+    public List<ShippingAddressDto> findAll_ShippingAddress(String username)
     {
         Customer Existing_Customer = customerService.getAuthenticatedCustomer(username);
         List<ShippingAddress> shippingAddresses = shippingAddressRepo.getAllByAuthenticatedCustomer(Existing_Customer.getCustomerName());
@@ -37,7 +40,8 @@ public class CustomerShippingAddressService {
         return shippingAddressDtos ;
     }
 
-    public ShippingAddressDto createOrUpdate (String username , ShippingAddressDto shippingAddressDto){
+    public ShippingAddressDto createOrUpdate_shippingAddress (String username , ShippingAddressDto shippingAddressDto)
+    {
         Customer Existing_Customer = customerService.getAuthenticatedCustomer(username);
 
         if(shippingAddressDto.getId()>0){
@@ -60,5 +64,16 @@ public class CustomerShippingAddressService {
         shippingAddressDto.setId(newShippingAddress.getId());
 
         return shippingAddressDto ;
+    }
+
+    @Transactional
+    public String delete_shippingAddress (String username , Integer shippingAddressId)
+    {
+        Customer Existing_Customer = customerService.getAuthenticatedCustomer(username);
+        if(shippingAddressId == null ) throw new  BadRequestException("Please Provide Valid Information"
+                ,"api/v1.0/customer-shippingAddress/{some Id}");
+        shippingAddressRepo.deleteById(Existing_Customer.getCustomer_id(),shippingAddressId);
+
+        return "Shipping Address Deleted SuccessFully" ;
     }
 }

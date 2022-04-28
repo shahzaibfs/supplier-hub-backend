@@ -33,4 +33,6 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
     )
     List<Product> getAllSupplierProductsInOutOfStockTable(Integer id);
 
+
+    List<Product> findAllByIsNewProduct(boolean isNewProduct);
 }
