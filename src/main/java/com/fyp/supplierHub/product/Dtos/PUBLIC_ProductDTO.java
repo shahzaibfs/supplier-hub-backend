@@ -24,6 +24,7 @@ public class PUBLIC_ProductDTO {
 
     private OutOfStock outOfStock ;
     private SupplierDTO supplier ;
+    private PUBLIC_productCategoryDto productCategory;
 
 
 }

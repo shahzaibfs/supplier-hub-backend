@@ -56,7 +56,6 @@ public class ProductSupplierService {
             productDto.setCategory(null);
 
         productDto.setDateOfCreation(LocalDate.now());
-        productDto.setNewProduct(true);
 
         //Todo: check if product is in our database
         if(productDto.getProductId() > 0){
@@ -90,6 +89,7 @@ public class ProductSupplierService {
 
             Product New_Product = new Product();
             New_Product.setSupplier(EXISTING_SUPPLIER);
+            productDto.setNewProduct(true);
             modelMapper.map(productDto,New_Product);
 
             New_Product= productRepo.save(New_Product);

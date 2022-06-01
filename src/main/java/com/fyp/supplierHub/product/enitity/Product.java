@@ -1,12 +1,14 @@
 package com.fyp.supplierHub.product.enitity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fyp.supplierHub.cart.entity.CartProducts;
 import com.fyp.supplierHub.categories.Category;
 import com.fyp.supplierHub.supplier.entity.Supplier;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -56,6 +58,17 @@ public class Product {
     @JoinColumn(name="out_of_stock_id",referencedColumnName = "out_of_stock_id")
     private OutOfStock outOfStock ;
 
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private List<CartProducts> cartProductsList ;
+
+    public List<CartProducts> getCartProductsList() {
+        return cartProductsList;
+    }
+
+    public void setCartProductsList(List<CartProducts> cartProductsList) {
+        this.cartProductsList = cartProductsList;
+    }
 
     public OutOfStock getOutOfStock() {
         return outOfStock;

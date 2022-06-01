@@ -9,9 +9,8 @@ import javax.persistence.Column;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class  SupplierDTO {
-    private int supplierId ;
+public class PUBLIC_productCategoryDto {
+    private Integer categoryId;
 
-    private String brandName;
-    private String supplierProfileUrl ;
+    private String categoryName;
 }
