@@ -47,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "favicon.ico")
                 .permitAll()
                 .antMatchers(HttpMethod.GET,"/api/v1.0/category/**").permitAll()
+                .antMatchers("/api/v1.0/order").permitAll()
                 .antMatchers("/api/v1.0/cart").hasAuthority("ROLE_CUSTOMER")
                 .antMatchers("/api/v1.0/product-category/**","/api/v1.0/upload/**","/image/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/v1.0/product/**").permitAll()

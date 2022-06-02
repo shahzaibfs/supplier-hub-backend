@@ -36,7 +36,7 @@ public class CartService {
         Cart new_cart  = Cart.builder()
                 .customer(existing_customer)
                 .build();
-        cartRepo.save(new_cart);
+        new_cart =  cartRepo.save(new_cart);
         return new_cart ;
     }
 
@@ -49,7 +49,7 @@ public class CartService {
         if(existing_cart_product != null){
             /*** When the Product is Already Existed in the Cart  ***/
             existing_cart_product.setQuantity(cartReq.getQuantity());
-            cartProductsRepo.save(existing_cart_product);
+            existing_cart_product=  cartProductsRepo.save(existing_cart_product);
             return existing_cart_product ;
         }
         /*** When the Product is not Existed in the Cart  ***/
@@ -58,7 +58,7 @@ public class CartService {
                 .quantity(cartReq.getQuantity())
                 .cart(existing_cart)
                 .build();
-        cartProductsRepo.save(new_cart_product);
+        new_cart_product= cartProductsRepo.save(new_cart_product);
         return new_cart_product;
     }
 
