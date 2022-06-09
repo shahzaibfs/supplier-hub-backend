@@ -2,6 +2,7 @@ package com.fyp.supplierHub.order.service;
 
 import com.fyp.supplierHub.cart.entity.Cart;
 import com.fyp.supplierHub.cart.entity.CartProducts;
+import com.fyp.supplierHub.cart.repository.CartProductsRepo;
 import com.fyp.supplierHub.cart.repository.CartRepo;
 import com.fyp.supplierHub.cart.service.CartService;
 import com.fyp.supplierHub.customer.entity.Customer;
@@ -20,6 +21,7 @@ import com.fyp.supplierHub.supplier.entity.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -33,6 +35,7 @@ public class OrderService {
     private final CartService cartService;
     private final OrderRepo orderRepo;
     private final OrdersRepo ordersRepo;
+    private final CartProductsRepo cartProductsRepo ;
     private double  totalPrice = 0;
 
     // Todo : orders Create
@@ -91,6 +94,7 @@ public class OrderService {
 
     }
 
+    @Transactional
     public OrderResponse postOrder (String customer_name , OrderRequest orderRequest){
         Customer existing_customer = customerService.getAuthenticatedCustomer(customer_name);
         Orders new_orders = createOrders(existing_customer,orderRequest.getCustomerShippingAddressId());
@@ -111,6 +115,7 @@ public class OrderService {
                 .totalPrice(new_orders.getTotalPrice())
                 .build();
 
+        cartProductsRepo.deleteAllByCartId(existing_cart.getCartId());
         return  orderResponse ;
     }
 
