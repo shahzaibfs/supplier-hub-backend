@@ -1,12 +1,14 @@
 package com.fyp.supplierHub.order.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fyp.supplierHub.customer.entity.Customer;
 import com.fyp.supplierHub.customer.entity.ShippingAddress;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -43,5 +45,9 @@ public class Orders {
             referencedColumnName = "shipping_addressId"
     )
     private ShippingAddress shippingAddress;
+
+    @OneToMany(fetch = FetchType.LAZY , mappedBy = "orders")
+    @JsonIgnore
+    private List<Order> orders ;
 
 }

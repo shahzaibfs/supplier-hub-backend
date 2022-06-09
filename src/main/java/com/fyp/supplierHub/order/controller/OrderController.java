@@ -25,4 +25,9 @@ public class OrderController {
         return ResponseEntity.ok(orderService.postOrder(customer_name,orderRequest));
     }
 
+    @GetMapping
+    private ResponseEntity<?> getOrdersByCustomer (){
+
+        return  ResponseEntity.ok(orderService.getAllOrders());
+    }
 }

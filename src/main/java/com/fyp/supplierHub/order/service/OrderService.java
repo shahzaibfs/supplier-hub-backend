@@ -7,7 +7,9 @@ import com.fyp.supplierHub.cart.repository.CartRepo;
 import com.fyp.supplierHub.cart.service.CartService;
 import com.fyp.supplierHub.customer.entity.Customer;
 import com.fyp.supplierHub.customer.entity.ShippingAddress;
+import com.fyp.supplierHub.customer.models.ShippingAddressDto;
 import com.fyp.supplierHub.customer.service.CustomerService;
+import com.fyp.supplierHub.order.dtos.CustomerOrders;
 import com.fyp.supplierHub.order.dtos.OrderRequest;
 import com.fyp.supplierHub.order.dtos.OrderResponse;
 import com.fyp.supplierHub.order.dtos.PublicProductDetails;
@@ -20,10 +22,12 @@ import com.fyp.supplierHub.product.repository.ProductRepo;
 import com.fyp.supplierHub.supplier.entity.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -117,6 +121,14 @@ public class OrderService {
 
         cartProductsRepo.deleteAllByCartId(existing_cart.getCartId());
         return  orderResponse ;
+    }
+
+    public List<CustomerOrders> getAllOrders (){
+        List<Orders> orders = ordersRepo.findAll();
+        TypeToken<List<CustomerOrders>> typeToken = new TypeToken<>(){};
+        List<CustomerOrders> customerOrders= modelMapper.map(orders,typeToken.getType());
+
+        return customerOrders;
     }
 
 }

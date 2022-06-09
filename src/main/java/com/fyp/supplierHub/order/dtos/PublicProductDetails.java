@@ -13,6 +13,8 @@ import lombok.*;
 public class PublicProductDetails {
 
     private int productId ;
+    private String productCoverUrl ;
+
     private SupplierDTO supplier ;
 
 }
