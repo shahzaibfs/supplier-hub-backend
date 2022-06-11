@@ -1,12 +1,18 @@
 package com.fyp.supplierHub.supplier.service;
 
+import com.fyp.supplierHub.product.Dtos.PUBLIC_ProductDTO;
 import com.fyp.supplierHub.supplier.entity.Supplier;
 import com.fyp.supplierHub.supplier.entity.SupplierBrandAddresses;
+import com.fyp.supplierHub.supplier.models.PublicSupplierData;
 import com.fyp.supplierHub.supplier.models.SupplierRequest;
 import com.fyp.supplierHub.supplier.repository.SupplierBrandAddressRepo;
 import com.fyp.supplierHub.supplier.repository.SupplierRepo;
 import com.fyp.supplierHub.user.MyUserDetailService;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,13 +22,15 @@ public class SupplierServiceImp implements SupplierService{
     private final SupplierRepo supplierRepo;
     private final MyUserDetailService myUserDetailService ;
     private final SupplierBrandAddressRepo supplierBrandAddressRepo ;
+    private final ModelMapper modelMapper ;
 
     @Autowired
     public SupplierServiceImp(SupplierRepo supplierRepo, MyUserDetailService myUserDetailService ,
-                              SupplierBrandAddressRepo supplierBrandAddressRepo) {
+                              SupplierBrandAddressRepo supplierBrandAddressRepo,ModelMapper modelMapper) {
         this.supplierRepo = supplierRepo;
         this.myUserDetailService = myUserDetailService;
         this.supplierBrandAddressRepo = supplierBrandAddressRepo ;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -88,5 +96,8 @@ public class SupplierServiceImp implements SupplierService{
     public SupplierBrandAddresses getMainBrandAddress(Integer supplierId){
         return supplierBrandAddressRepo.findMainAddress(supplierId,true);
     }
+
+
+
 
 }

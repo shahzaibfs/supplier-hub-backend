@@ -82,4 +82,15 @@ public class ProductService {
         return public_productDTOS ;
 
     }
+
+    public Page<PUBLIC_ProductDTO> searchProductByCategrory (Integer query){
+        Pageable page = PageRequest.of(0, 10);
+
+        Page<Product> products = productRepo.searchProductByCategory(query,page);
+        TypeToken<Page<PUBLIC_ProductDTO>> typeToken = new TypeToken<>(){};
+
+        Page<PUBLIC_ProductDTO> public_productDTOS = modelMapper.map(products,typeToken.getType());
+
+        return public_productDTOS ;
+    }
 }

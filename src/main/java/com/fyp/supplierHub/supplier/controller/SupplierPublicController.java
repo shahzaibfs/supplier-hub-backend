@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,11 @@ public class SupplierPublicController {
     private ResponseEntity<PublicSupplierData> getSupplier(@PathVariable Integer id){
 
         return ResponseEntity.ok(publicSupplierService.getSupplier(id)) ;
+    }
+
+    @GetMapping("/topRatedSuppliers")
+    public ResponseEntity<Page<PublicSupplierData>> topRatedSuppliers (){
+        return ResponseEntity.ok(publicSupplierService.TopRatedSuppliers());
     }
 
 }

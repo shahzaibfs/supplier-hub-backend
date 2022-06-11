@@ -43,4 +43,8 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
             "Or p.productDesc LIKE CONCAT('%', :query, '%')"+
             "Or p.category.categoryName LIKE CONCAT('%', :query, '%')")
     Page<Product> searchProducts(String query, Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE " +
+            "p.category.categoryId = ?1 ")
+    Page<Product> searchProductByCategory(Integer query, Pageable pageable);
 }

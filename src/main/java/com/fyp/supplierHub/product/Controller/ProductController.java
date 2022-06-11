@@ -49,4 +49,8 @@ public class ProductController {
     {
         return ResponseEntity.ok(productService.searchProduct(searchProductReq.getQuery()));
     }
+    @GetMapping("/searchProductsByCategory/{id}")
+    public  ResponseEntity<Page<PUBLIC_ProductDTO>> searchProductsByCategory (@PathVariable Integer id){
+        return ResponseEntity.ok(productService.searchProductByCategrory(id));
+    }
 }
