@@ -9,6 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -66,5 +69,17 @@ public class ProductService {
 
         List<PUBLIC_ProductDTO>  PUBLIC_ProductDTOS = modelMapper.map(products,typeToken.getType());
         return PUBLIC_ProductDTOS ;
+    }
+
+    public Page<PUBLIC_ProductDTO> searchProduct (String query){
+        Pageable page = PageRequest.of(0, 5);
+
+        Page<Product> products = productRepo.searchProducts(query,page);
+        TypeToken<Page<PUBLIC_ProductDTO>> typeToken = new TypeToken<>(){};
+
+        Page<PUBLIC_ProductDTO> public_productDTOS = modelMapper.map(products,typeToken.getType());
+
+        return public_productDTOS ;
+
     }
 }

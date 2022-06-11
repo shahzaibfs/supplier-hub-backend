@@ -3,8 +3,10 @@ package com.fyp.supplierHub.product.Controller;
 
 import com.fyp.supplierHub.exceptions.Exceptions.NotFoundException;
 import com.fyp.supplierHub.product.Dtos.PUBLIC_ProductDTO;
+import com.fyp.supplierHub.product.Dtos.SearchProductReq;
 import com.fyp.supplierHub.product.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,4 +44,9 @@ public class ProductController {
         return  ResponseEntity.ok(productService.loadAll_newProducts());
     }
 
+    @PostMapping("/searchProduct")
+    public ResponseEntity<Page<PUBLIC_ProductDTO>> searchProduct (@RequestBody SearchProductReq searchProductReq)
+    {
+        return ResponseEntity.ok(productService.searchProduct(searchProductReq.getQuery()));
+    }
 }

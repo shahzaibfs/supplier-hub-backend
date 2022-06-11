@@ -2,6 +2,8 @@ package com.fyp.supplierHub.product.repository;
 
 import com.fyp.supplierHub.product.Dtos.ProductDto;
 import com.fyp.supplierHub.product.enitity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -35,4 +37,10 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
 
 
     List<Product> findAllByIsNewProduct(boolean isNewProduct);
+
+    @Query("SELECT p FROM Product p WHERE " +
+            "p.productName LIKE CONCAT('%',:query, '%')" +
+            "Or p.productDesc LIKE CONCAT('%', :query, '%')"+
+            "Or p.category.categoryName LIKE CONCAT('%', :query, '%')")
+    Page<Product> searchProducts(String query, Pageable pageable);
 }
