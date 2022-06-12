@@ -14,6 +14,7 @@ public class PublicProductDetails {
 
     private int productId ;
     private String productCoverUrl ;
+    private long productPrice;
 
     private SupplierDTO supplier ;
 
