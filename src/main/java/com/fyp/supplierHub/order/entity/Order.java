@@ -27,6 +27,9 @@ public class Order {
     @Column(name = "status")
     private String status ;
 
+    @Column(name = "view_status")
+    private String viewStatus;
+
     @ManyToOne
     @JoinColumn(
             name = "supplier_id",
