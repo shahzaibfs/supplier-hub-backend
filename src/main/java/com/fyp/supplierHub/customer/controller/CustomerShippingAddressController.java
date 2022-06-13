@@ -1,9 +1,11 @@
 package com.fyp.supplierHub.customer.controller;
 
 import com.fyp.supplierHub.customer.models.ShippingAddressDto;
+import com.fyp.supplierHub.customer.models.ShippingAddressSearchQuery;
 import com.fyp.supplierHub.customer.service.CustomerShippingAddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -39,5 +41,15 @@ public class CustomerShippingAddressController {
     private ResponseEntity<String> delete_shippingAddress (Authentication authentication ,@PathVariable Integer shippingAddressId){
         String username  = authentication.getName();
         return ResponseEntity.ok(customerShippingAddressService.delete_shippingAddress(username,shippingAddressId));
+    }
+
+    @PostMapping("/search-shipping-address")
+    private ResponseEntity<List<ShippingAddressDto>> searchShippingAddress (@Autowired Authentication authentication, @RequestBody ShippingAddressSearchQuery shippingAddressSearchQuery){
+        return ResponseEntity.ok(
+                customerShippingAddressService.searchShippingAddress(
+                        authentication.getName(),
+                        shippingAddressSearchQuery
+                )
+        );
     }
 }

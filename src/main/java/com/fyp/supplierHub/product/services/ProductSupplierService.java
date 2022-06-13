@@ -187,5 +187,13 @@ public class ProductSupplierService {
         return productDtoList ;
     }
 
+    public List<ProductDto> getSearchProductBySupplier(String username,String query){
+        Supplier Existing_Supplier = supplierServiceImp.LoadAuthenticatedSupplier(username);
+        List<Product> products= productRepo.searchProducts(Existing_Supplier.getSupplierId(),query);
+        TypeToken<List<ProductDto>> typeToken = new TypeToken<List<ProductDto>>(){} ;
+        List <ProductDto>  productDtoList = modelMapper.map(products,typeToken.getType());
+
+        return productDtoList ;
+    }
 
     }

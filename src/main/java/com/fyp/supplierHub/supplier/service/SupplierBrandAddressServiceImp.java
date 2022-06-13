@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class SupplierBrandAddressServiceImp implements SupplierBrandAddressService{
@@ -63,6 +64,17 @@ public class SupplierBrandAddressServiceImp implements SupplierBrandAddressServi
         System.out.println(brandAddressId);
         supplierBrandAddressRepo.deleteBrandAddress(EXISTING_SUPPLIER.getSupplierId(),brandAddressId) ;
 
+    }
+
+    @Override
+    public List<SupplierBrandAddresses> searchBrandAddress(String username, String city) {
+        Supplier EXISTING_SUPPLIER = supplierServiceImp.LoadAuthenticatedSupplier(username);
+        List<SupplierBrandAddresses> supplierBrandAddresses = supplierBrandAddressRepo.searchSupplierAddresses(
+                EXISTING_SUPPLIER.getSupplierId(),city
+        );
+
+
+        return supplierBrandAddresses;
     }
 
 

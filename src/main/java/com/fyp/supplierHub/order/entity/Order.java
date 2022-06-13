@@ -28,7 +28,7 @@ public class Order {
     private String status ;
 
     @Column(name = "view_status")
-    private String viewStatus;
+    private String viewStatus= "waiting";
 
     @ManyToOne
     @JoinColumn(
@@ -50,4 +50,10 @@ public class Order {
             referencedColumnName = "orders_id"
     )
     private Orders orders;
+
+    @PrePersist
+    void preInsert() {
+        if (this.viewStatus == null)
+            this.viewStatus = "waiting";
+    }
 }

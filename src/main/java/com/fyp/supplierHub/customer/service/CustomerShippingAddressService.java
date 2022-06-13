@@ -3,6 +3,7 @@ package com.fyp.supplierHub.customer.service;
 import com.fyp.supplierHub.customer.entity.Customer;
 import com.fyp.supplierHub.customer.entity.ShippingAddress;
 import com.fyp.supplierHub.customer.models.ShippingAddressDto;
+import com.fyp.supplierHub.customer.models.ShippingAddressSearchQuery;
 import com.fyp.supplierHub.customer.repository.ShippingAddressRepo;
 import com.fyp.supplierHub.exceptions.Exceptions.BadRequestException;
 import com.fyp.supplierHub.exceptions.Exceptions.NotFoundException;
@@ -76,4 +77,24 @@ public class CustomerShippingAddressService {
 
         return "Shipping Address Deleted SuccessFully" ;
     }
+
+    public List<ShippingAddressDto> searchShippingAddress (String username , ShippingAddressSearchQuery shippingAddressSearchQuery){
+        Customer existing_customer = customerService.getAuthenticatedCustomer(username);
+
+        List<ShippingAddress> shippingAddresses = shippingAddressRepo.searchShippingAddress(
+                existing_customer.getCustomer_id(),
+                shippingAddressSearchQuery.getShopName(),
+                shippingAddressSearchQuery.getShippingAddress());
+
+        TypeToken<List<ShippingAddressDto>> typeToken = new TypeToken<>(){};
+
+        List<ShippingAddressDto> searchAddressList = modelMapper.map(shippingAddresses ,typeToken.getType()) ;
+
+
+        return searchAddressList ;
+
+
+    }
+
+
 }

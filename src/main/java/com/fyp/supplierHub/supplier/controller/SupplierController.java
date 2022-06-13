@@ -72,6 +72,13 @@ public class SupplierController {
         return ResponseEntity.ok( "Deleted Successfully");
     }
 
+    @GetMapping("/{city}")
+    private ResponseEntity<?> searchBrandAddresses(@Autowired Authentication authentication ,@PathVariable String city){
+        System.out.println(city
+        );
+        return ResponseEntity.ok(supplierBrandAddressServiceImp.searchBrandAddress(authentication.getName(),
+                city));
+    }
 
 
 }

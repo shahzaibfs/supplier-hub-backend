@@ -1,11 +1,14 @@
 package com.fyp.supplierHub.product.Controller;
 
+import com.fyp.supplierHub.product.Dtos.PUBLIC_ProductDTO;
 import com.fyp.supplierHub.product.Dtos.ProductDto;
 import com.fyp.supplierHub.product.Dtos.ProductOutOfStockReqDto;
+import com.fyp.supplierHub.product.Dtos.SearchProductReq;
 import com.fyp.supplierHub.product.enitity.Product;
 import com.fyp.supplierHub.product.services.ProductService;
 import com.fyp.supplierHub.product.services.ProductSupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -63,5 +66,11 @@ public class ProductSupplierController {
     @GetMapping("/get-all-outOfStock-products")
     private ResponseEntity <List<ProductDto>> getAllOutOfStockProducts (Authentication authentication){
         return ResponseEntity.ok(productSupplierService.getAllOutOfStockProducts(authentication.getName()));
+    }
+
+    @PostMapping("/searchProduct")
+    public ResponseEntity<?> searchProduct (@Autowired Authentication authentication ,@RequestBody SearchProductReq searchProductReq)
+    {
+        return ResponseEntity.ok(productSupplierService.getSearchProductBySupplier(authentication.getName(),searchProductReq.getQuery()));
     }
 }

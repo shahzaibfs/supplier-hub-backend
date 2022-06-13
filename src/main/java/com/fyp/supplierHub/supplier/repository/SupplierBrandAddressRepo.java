@@ -1,5 +1,6 @@
 package com.fyp.supplierHub.supplier.repository;
 
+import com.fyp.supplierHub.customer.entity.ShippingAddress;
 import com.fyp.supplierHub.supplier.entity.SupplierBrandAddresses;
 import com.fyp.supplierHub.supplier.entity.Supplier;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 
 @Repository
 public interface SupplierBrandAddressRepo extends JpaRepository<SupplierBrandAddresses,Integer> {
@@ -25,5 +27,8 @@ public interface SupplierBrandAddressRepo extends JpaRepository<SupplierBrandAdd
     void deleteBrandAddress(Integer supplierId , Integer brandAddressId);
 
 
+    @Query("Select sa from SupplierBrandAddresses sa Where sa.supplier.supplierId= :supplierId "+
+            " and sa.city LIKE CONCAT('%', :city , '%') " )
+    List<SupplierBrandAddresses> searchSupplierAddresses(int supplierId , String city);
 
 }

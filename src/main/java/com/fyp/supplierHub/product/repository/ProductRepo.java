@@ -47,4 +47,11 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
     @Query("SELECT p FROM Product p WHERE " +
             "p.category.categoryId = ?1 ")
     Page<Product> searchProductByCategory(Integer query, Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE p.outOfStock = NULL  AND " +
+            " p.supplier.supplierId = :id and " +
+            "p.productName LIKE CONCAT('%',:query, '%')"  +
+            "or p.productDesc LIKE CONCAT('%', :query, '%')"+
+            "or p.category.categoryName LIKE CONCAT('%', :query, '%')")
+    List<Product> searchProducts(Integer id,String query);
 }

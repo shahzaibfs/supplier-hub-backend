@@ -9,10 +9,7 @@ import com.fyp.supplierHub.customer.entity.Customer;
 import com.fyp.supplierHub.customer.entity.ShippingAddress;
 import com.fyp.supplierHub.customer.models.ShippingAddressDto;
 import com.fyp.supplierHub.customer.service.CustomerService;
-import com.fyp.supplierHub.order.dtos.CustomerOrders;
-import com.fyp.supplierHub.order.dtos.OrderRequest;
-import com.fyp.supplierHub.order.dtos.OrderResponse;
-import com.fyp.supplierHub.order.dtos.PublicProductDetails;
+import com.fyp.supplierHub.order.dtos.*;
 import com.fyp.supplierHub.order.entity.Order;
 import com.fyp.supplierHub.order.entity.Orders;
 import com.fyp.supplierHub.order.repository.OrderRepo;
@@ -123,12 +120,23 @@ public class OrderService {
         return  orderResponse ;
     }
 
-    public List<CustomerOrders> getAllOrders (){
-        List<Orders> orders = ordersRepo.findAll();
+    public List<CustomerOrders> getAllOrders (String username ){
+        Customer existing_customer = customerService.getAuthenticatedCustomer(username);
+        List<Orders> orders = ordersRepo.getTrackOrdersByCustomer(existing_customer.getCustomer_id());
         TypeToken<List<CustomerOrders>> typeToken = new TypeToken<>(){};
         List<CustomerOrders> customerOrders= modelMapper.map(orders,typeToken.getType());
 
         return customerOrders;
+    }
+
+    public List<CustomerOrders> getOrdersByOrderId (String username , Integer id){
+        Customer existing_customer = customerService.getAuthenticatedCustomer(username);
+       List<Orders>  existing_orders = ordersRepo.searchOrder(id,existing_customer.getCustomer_id());
+
+       TypeToken<List<CustomerOrders>> typeToken = new TypeToken<>(){};
+       List<CustomerOrders> searchOrdersList = modelMapper.map(existing_orders,typeToken.getType());
+
+        return searchOrdersList;
     }
 
 }

@@ -1,14 +1,15 @@
 package com.fyp.supplierHub.order.controller;
 
-import com.fyp.supplierHub.order.dtos.OrderRequest;
-import com.fyp.supplierHub.order.dtos.OrderResponse;
-import com.fyp.supplierHub.order.dtos.PublicProductDetails;
+import com.fyp.supplierHub.order.dtos.*;
 import com.fyp.supplierHub.order.service.OrderService;
 import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -26,10 +27,15 @@ public class OrderController {
     }
 
     @GetMapping
-    private ResponseEntity<?> getOrdersByCustomer (){
+    private ResponseEntity<?> getOrdersByCustomer (@Autowired Authentication authentication){
 
-        return  ResponseEntity.ok(orderService.getAllOrders());
+        return  ResponseEntity.ok(orderService.getAllOrders(authentication.getName()));
     }
 
+
+    @GetMapping("/{orderId}")
+    private ResponseEntity<List<CustomerOrders>> searchOrders (@Autowired Authentication authentication , @PathVariable Integer orderId){
+        return ResponseEntity.ok(orderService.getOrdersByOrderId(authentication.getName(),orderId));
+    }
 
 }
