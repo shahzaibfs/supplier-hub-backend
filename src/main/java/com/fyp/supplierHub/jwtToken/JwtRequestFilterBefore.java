@@ -49,7 +49,6 @@ public class JwtRequestFilterBefore extends OncePerRequestFilter {
         System.out.println(JwtHeader);
         if(JwtHeader != null && JwtHeader.startsWith("bearer")){
             headerToken = JwtHeader.substring(7) ;
-            System.out.println("i am on try catch ");
             try {
                 headerUsername = jwtTokenUtil.getUsernameFromToken(headerToken);
             } catch (IllegalArgumentException e) {
